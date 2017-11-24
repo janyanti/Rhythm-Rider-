@@ -12,10 +12,10 @@ import rtmidi
 from Note import Notes
 import os
 import time
-
+import mido
 from mido import MidiFile
 
-filename = 'pachelbel_canon.mid'
+filename = 'the_entertainer.mid'
 mid = MidiFile('music/' + filename)
 textOut = open('assets/' + filename.split('.')[0], 'w')
 
@@ -26,11 +26,11 @@ def parseMIDI(file):
     # read midi file and filter notes
     song = []
     for msg in file:
-        print(msg.bytes)
+        print(msg)
         if isNote(msg):
             time = msg.time
             notes = msg.bytes()
-            textOut.write(str(notes) + '\n')
+            textOut.write(str(notes) + str(time) + '\n')
             song.append((notes, time))
     return song
 
@@ -43,9 +43,20 @@ def findTimeSignature(file):
             time.append(([num, den], i))
     return time
 
+
+def findTempo(file):
+    for (i, msg) in enumerate(file):
+        if isTempo(msg):
+            tempo = msg.tempo
+            return mido.tempo2bpm(tempo)
+
+
 def isTimeSignature(msg):
     return msg.type == 'time_signature'
 
+
+def isTempo(msg):
+    return msg.type == 'set_tempo'
 
 def isNote(msg):
     # check if meta message denotes note played
@@ -100,10 +111,10 @@ def extractNotes(noteList):
         channel = note[0]
         noteID = note[1]
         vel = note[2]
-        time.sleep(dt)
+        # time.sleep(dt)
         player.send_message(note)
         if not isNoteOff(note):
-            noteObjects.append(Notes(noteID, vel, channel))
+            noteObjects.append(Notes(noteID, vel, channel, dt))
     closePlayer(player)
     return noteObjects
 
@@ -115,6 +126,8 @@ def generateSong(mid):
     print('Bytes:', song, len(song))
     time_sig = findTimeSignature(mid)
     print('Time Signature:' ,time_sig)
+    tempo = findTempo(mid)
+    print('Tempo:', tempo)
     pairs = getNotePairs(song)
     print('Pairs:' ,pairs, len(pairs))
     output = extractNotes(song)

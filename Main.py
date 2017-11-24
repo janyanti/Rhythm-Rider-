@@ -21,7 +21,7 @@ class Game(object):
         self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
         self.Clefs = pygame.sprite.Group(clefs)
         self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH//2, 135))
-        self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH-90,270))
+        self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
         self.NextNote = pygame.sprite.Group(GameObjects.NextNote())
         self.NoteFont = pygame.font.SysFont('agency fb', 100)
         self.GameFont = pygame.font.SysFont('agency fb', 30)

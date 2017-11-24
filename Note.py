@@ -64,14 +64,15 @@ def listToDict(list):
 
 class Notes():
     # music note object
-    noteCovert = listToDict(digitToNotes())
+    noteConvert = listToDict(digitToNotes())
     Clefs = ['Bass', 'Treble']
 
-    def __init__(self, noteID, velocity, channel):
+    def __init__(self, noteID, velocity=112, channel=144, dt=0):
         self.noteID = noteID
         self.velocity = velocity
         self.channel = channel
-        self.note = Notes.noteCovert[noteID]
+        self.dt = dt
+        self.note = Notes.noteConvert[noteID]
         self.type = self.getClef()
 
     def __repr__(self):
@@ -110,12 +111,12 @@ class Notes():
         note = self.getBaseNote()
         print(note)
         if clef is 'Treble':
-            noteRef = Notes(60, 0, 0)
+            noteRef = Notes(60)
             dist = math.ceil((note.noteID - noteRef.noteID) / 2)
             print(dist)
             pos = 270 - dist * NOTESTEP
         elif clef is 'Bass':
-            noteRef = Notes(36, 0, 0)
+            noteRef = Notes(36)
             dist = math.ceil((note.noteID - noteRef.noteID) / 2)
             print(dist)
             pos = 605 - (dist) * NOTESTEP
@@ -124,7 +125,7 @@ class Notes():
     def getBaseNote(self):
         noteID = self.noteID
         if self.isAccidental():
-            return Notes(noteID - 1, self.velocity, self.channel)
+            return Notes(noteID - 1, self.velocity, self.channel, self.dt)
         return self
 
     def isAccidental(self):
@@ -134,8 +135,9 @@ class Notes():
     @staticmethod
     def toNote(list):
         # creates a note object from list
-        channel = list[0]
-        noteID = list[1]
-        velocity = list[-1]
-        result = Notes(noteID, velocity, channel)
+        channel = list.pop(0)
+        noteID = list.pop(0)
+        velocity = list.pop(0)
+        dt = list.pop()
+        result = Notes(noteID, velocity, channel, dt)
         return result

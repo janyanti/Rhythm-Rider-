@@ -12,8 +12,7 @@ import os
 import Note
 from Settings import *
 
-
-refNote = Note.Notes(58, 112, 144)
+refNote = Note.Notes(58, 112, 144, 0)
 
 class GameObject(pygame.sprite.Sprite):
     # Generic game sprite object
@@ -90,7 +89,7 @@ class MusicNote(GameObject):
     def __init__(self, x, y=0, img=0, rad=20):
         super(MusicNote, self).__init__ \
             (x, y, MusicNote.image, rad)
-        self.Note = Note.Notes.toNote([144, 49, 112])
+        self.Note = Note.Notes.toNote([144, 60, 112, 0])
         self.velocity = (-5, 0)
         self.y = self.Note.getHeight()
 
@@ -133,6 +132,13 @@ class MusicNote(GameObject):
             if noteID >= 50:
                 return downNote
             return upNote
+
+    def update(self, screenWidth, screenHeight):
+        self.image = pygame.transform.rotate(self.baseImage, self.angle)
+        vx, vy = self.velocity
+        self.x += vx
+        self.y += vy
+        self.updateRect()
 
 
 class Lines(pygame.sprite.Sprite):
