@@ -94,7 +94,6 @@ class MusicNote(GameObject):
         self.y = self.Note.getHeight()
 
     def draw(self, screen):
-        print(self.y)
         self.rect = self.getRect()
         screen.blit(self.image, self.rect)
         stemRect = self.noteType()
@@ -142,6 +141,7 @@ class MusicNote(GameObject):
 
 
 class Lines(pygame.sprite.Sprite):
+    # line object used to draw staff lines
     lineSpace = HEIGHT / 16
     margin = STEP
     clefLines = 5
@@ -188,7 +188,7 @@ class LedgerLine(pygame.sprite.Sprite):
         super(LedgerLine, self).__init__()
         self.x = x
         self.y = y
-        self.height = 450
+        self.height = 452
         self.width = 4
         w, h = self.width, self.height
         self.rect = pygame.Rect(self.x, self.y, w, h)

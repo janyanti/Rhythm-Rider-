@@ -9,11 +9,14 @@
 import os
 import math
 import pygame
+import time
 import GameObjects
 from Settings import *
 import pygame
+import queue
+import threading
 
-
+q = queue.Queue()
 class Game(object):
 
     def init(self):
@@ -22,9 +25,13 @@ class Game(object):
         self.Clefs = pygame.sprite.Group(clefs)
         self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH//2, 135))
         self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
+        self.Notes.add(GameObjects.MusicNote(WIDTH * 2 + 180, 270))
         self.NextNote = pygame.sprite.Group(GameObjects.NextNote())
         self.NoteFont = pygame.font.SysFont('agency fb', 100)
         self.GameFont = pygame.font.SysFont('agency fb', 30)
+        self.timeFont = pygame.font.SysFont('aruvarb', 116)
+        self.count = 0
+        self.t = threading.Thread(target=self.worker)
 
 
     def mousePressed(self, x, y):
@@ -65,6 +72,7 @@ class Game(object):
         self.Hero.draw(screen)
         self.NextNote.draw(screen)
         self.drawNextText(screen)
+        self.drawTimeSignature(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
@@ -84,10 +92,25 @@ class Game(object):
         accuracy = self.GameFont.render("Accuracy: 85%", True, BLACK, None)
         screen.blit(accuracy, (WIDTH - 6*STEP, NOTESTEP*2))
 
+    def drawTimeSignature(self, screen):
+        numer = self.timeFont.render('4', False, BLACK, None)
+        denom = self.timeFont.render('4', False, BLACK, None)
+        screen.blit(numer, (STEP * 6, -NOTESTEP * 5))
+        screen.blit(denom, (STEP * 6, -NOTESTEP))
+        screen.blit(numer, (STEP * 6, NOTESTEP * 17))
+        screen.blit(denom, (STEP * 6, NOTESTEP * 21))
+
+    def worker(self):
+        print('working')
+        self.count += 1
+        q.put(self.count)
+        time.sleep(1)
+
     def clefCollision(self):
         for clef in self.Clefs:
             if pygame.sprite.spritecollide(clef, self.Notes, True):
                 print('Bye Bye!')
+                print(time.time())
 
     def __init__(self, w=WIDTH, h=HEIGHT, f=FPS, t=TITLE):
         self.width = w
@@ -109,6 +132,9 @@ class Game(object):
 
         # call game-specific initialization
         self.init()
+        print('hi')
+        # if self.count == 0:
+        #     self.t.start()
         playing = True
         while playing:
             time = clock.tick(self.fps)
@@ -134,6 +160,10 @@ class Game(object):
                     playing = False
             screen.fill(self.bgColor)
             self.redrawAll(screen)
+            # try:
+            #     print(q.get())
+            # except:
+            #     print('oh well')
             pygame.display.flip()
 
         pygame.quit()
@@ -142,6 +172,7 @@ class Game(object):
 def main():
     game = Game()
     game.run()
+
 
 if __name__ == '__main__':
     main()

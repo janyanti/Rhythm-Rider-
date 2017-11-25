@@ -15,7 +15,7 @@ import time
 import mido
 from mido import MidiFile
 
-filename = 'the_entertainer.mid'
+filename = 'pachelbel_canon.mid'
 mid = MidiFile('music/' + filename)
 textOut = open('assets/' + filename.split('.')[0], 'w')
 
@@ -26,7 +26,7 @@ def parseMIDI(file):
     # read midi file and filter notes
     song = []
     for msg in file:
-        print(msg)
+        # print(msg)
         if isNote(msg):
             time = msg.time
             notes = msg.bytes()
@@ -74,7 +74,6 @@ def getNotePairs(song):
     pairs = []
     for elem in song:
         notes.append(elem[0])
-    result = ()
     while len(notes) > 0:
         note_on = notes.pop(0)
         currNote = note_on[1]
@@ -123,6 +122,7 @@ def generateSong(mid):
     print('Song Name:', mid.tracks[0].name)
     print("Ticks:", mid.ticks_per_beat)
     song = parseMIDI(mid)
+    print('Time:', mid.length)
     print('Bytes:', song, len(song))
     time_sig = findTimeSignature(mid)
     print('Time Signature:' ,time_sig)
