@@ -29,12 +29,7 @@ class Game(object):
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
 
         # start screen
-        startSprite = pygame.sprite.Sprite()
-        startSprite.image = pygame.image.load('assets/startscreen.png')
-        startSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
-        self.startScreen = pygame.sprite.Group(startSprite)
-        self.startHero = pygame.sprite.Group(GameObjects.startHero())
-        self.spawnedNotes = pygame.sprite.Group()
+        self.initStart()
 
         # help screen
         # helpSprite = pygame.sprite.Sprite()
@@ -43,7 +38,8 @@ class Game(object):
         # self.helpscreen = pygame.sprite.Group(helpSprite)
 
     def mousePressed(self, x, y):
-        pass
+        if self.mode == 'start':
+            self.onClick(x, y)
 
     def mouseReleased(self, x, y):
         pass
@@ -53,6 +49,17 @@ class Game(object):
 
     def mouseDrag(self, x, y):
         pass
+
+    def initStart(self):
+        startSprite = pygame.sprite.Sprite()
+        startSprite.image = pygame.image.load('assets/startscreen.png')
+        startSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
+        self.startScreen = pygame.sprite.Group(startSprite)
+        self.startHero = pygame.sprite.Group(GameObjects.startHero())
+        self.spawnedNotes = pygame.sprite.Group()
+        playButton = GameObjects.Button(640, 540, 'play')
+        helpButton = GameObjects.Button(640, 650, 'help')
+        self.startButtons = pygame.sprite.Group(playButton, helpButton)
 
     def initGame(self):
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
@@ -94,6 +101,8 @@ class Game(object):
             self.startScreen.draw(screen)
             self.startHero.draw(screen)
             self.spawnedNotes.draw(screen)
+            self.startButtons.draw(screen)
+
         elif (self.mode == 'play'):
             for line in self.Lines:
                 line.draw(screen)
@@ -120,6 +129,13 @@ class Game(object):
         for hero in self.startHero:
             result = hero
         return result
+
+    def onClick(self, x, y):
+        for button in self.startButtons:
+            test = button.rect
+            if test.collidepoint(x, y):
+                self.mode = button.click(button.name)
+                self.initGame()
 
     def drawNextText(self, screen):
         note = self.NoteFont.render("C#", False, BLACK, None)

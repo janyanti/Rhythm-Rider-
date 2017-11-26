@@ -28,6 +28,11 @@ def load_images(filename):
     return image
 
 
+def joinFuntion(obj, function):
+    result = obj + '.' + function
+    return result
+
+
 ##############################################
 # Classes
 ##############################################
@@ -322,3 +327,25 @@ class NextNote(pg.sprite.Sprite):
         self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
         self.image = pg.Surface((w, h))
         self.image.fill(WHITE)
+
+
+class Button(pg.sprite.Sprite):
+    actions = {'play': 'play', 'help': 'help'}
+
+    def __init__(self, x, y, image):
+        super(Button, self).__init__()
+        self.x, self.y = x, y
+        self.name = image
+        self.image = load_images(image)
+        w, h = self.image.get_size()
+        self.width, self.height = w, h
+        self.defineRect()
+
+    def defineRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+
+    def click(self, actionCode):
+        action = Button.actions[actionCode]
+        return action
