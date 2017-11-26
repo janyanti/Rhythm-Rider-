@@ -17,8 +17,9 @@ import queue
 import threading
 
 q = queue.Queue()
-class Game(object):
 
+
+class Game(object):
     def init(self):
         self.mode = 'start'
         self.timer = 0
@@ -40,7 +41,6 @@ class Game(object):
         # helpSprite.image = pygame.image.load('assets/helpscreen.png')
         # helpSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
         # self.helpscreen = pygame.sprite.Group(helpSprite)
-
 
     def mousePressed(self, x, y):
         pass
@@ -89,7 +89,6 @@ class Game(object):
             self.clefCollision()
             self.noteCollision()
 
-
     def redrawAll(self, screen):
         if self.mode == 'start':
             self.startScreen.draw(screen)
@@ -122,13 +121,13 @@ class Game(object):
             result = hero
         return result
 
-    def drawNextText(self,screen):
+    def drawNextText(self, screen):
         note = self.NoteFont.render("C#", False, BLACK, None)
-        screen.blit(note, (WIDTH//2, HEIGHT//2-45))
+        screen.blit(note, (WIDTH // 2, HEIGHT // 2 - 45))
         octave = self.GameFont.render("4", False, BLACK, None)
-        screen.blit(octave, (WIDTH // 2 + STEP*4, HEIGHT // 2+STEP))
+        screen.blit(octave, (WIDTH // 2 + STEP * 4, HEIGHT // 2 + STEP))
         accuracy = self.GameFont.render("Accuracy: 85%", True, BLACK, None)
-        screen.blit(accuracy, (WIDTH - 6*STEP, NOTESTEP*2))
+        screen.blit(accuracy, (WIDTH - 6 * STEP, NOTESTEP * 2))
 
     def drawTimeSignature(self, screen):
         numer = self.timeFont.render('4', False, BLACK, None)
@@ -189,10 +188,10 @@ class Game(object):
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.mouseReleased(*(event.pos))
                 elif (event.type == pygame.MOUSEMOTION and
-                      event.buttons == (0, 0, 0)):
+                              event.buttons == (0, 0, 0)):
                     self.mouseMotion(*(event.pos))
                 elif (event.type == pygame.MOUSEMOTION and
-                      event.buttons[0] == 1):
+                              event.buttons[0] == 1):
                     self.mouseDrag(*(event.pos))
                 elif event.type == pygame.KEYDOWN:
                     self._keys[event.key] = True
