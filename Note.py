@@ -82,7 +82,7 @@ class Notes():
         note = [self.channel, self.noteID, self.velocity]
         player = getPlayer()
         player.send_message(note)
-        time.sleep(0.75)
+        time.sleep(0.5)
         note[-1] = 0
         player.send_message(note)
 

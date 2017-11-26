@@ -20,18 +20,26 @@ q = queue.Queue()
 class Game(object):
 
     def init(self):
-        clefs = (GameObjects.TrebleClef(90,186), GameObjects.BassClef(90,504))
-        self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
-        self.Clefs = pygame.sprite.Group(clefs)
-        self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH//2, 135))
-        self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
-        self.Notes.add(GameObjects.MusicNote(WIDTH * 2 + 180, 270))
+        self.mode = 'start'
+        self.timer = 0
         self.NextNote = pygame.sprite.Group(GameObjects.NextNote())
         self.NoteFont = pygame.font.SysFont('agency fb', 100)
         self.GameFont = pygame.font.SysFont('agency fb', 30)
-        self.timeFont = pygame.font.SysFont('aruvarb', 116)
-        self.count = 0
-        self.t = threading.Thread(target=self.worker)
+        self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
+
+        # start screen
+        startSprite = pygame.sprite.Sprite()
+        startSprite.image = pygame.image.load('assets/startscreen.png')
+        startSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
+        self.startScreen = pygame.sprite.Group(startSprite)
+        self.startHero = pygame.sprite.Group(GameObjects.startHero())
+        self.spawnedNotes = pygame.sprite.Group()
+
+        # help screen
+        # helpSprite = pygame.sprite.Sprite()
+        # helpSprite.image = pygame.image.load('assets/helpscreen.png')
+        # helpSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
+        # self.helpscreen = pygame.sprite.Group(helpSprite)
 
 
     def mousePressed(self, x, y):
@@ -46,33 +54,57 @@ class Game(object):
     def mouseDrag(self, x, y):
         pass
 
+    def initGame(self):
+        clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
+        self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
+        self.Clefs = pygame.sprite.Group(clefs)
+        self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
+        self.Notes.add(GameObjects.MusicNote(WIDTH * 2 + 180, 270))
+        self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH // 2, 135))
+
     def keyPressed(self, keyCode, modifier):
-        hero = self.getHero()
-        if keyCode == pygame.K_UP:
-           hero.changeDirection(-1)
-           hero.move(WIDTH,HEIGHT)
-        if keyCode == pygame.K_DOWN:
-            hero.changeDirection(1)
-            hero.move(WIDTH,HEIGHT)
+        if self.mode == 'play':
+            hero = self.getHero()
+            if keyCode == pygame.K_UP:
+                hero.changeDirection(-1)
+                hero.move(WIDTH, HEIGHT)
+            if keyCode == pygame.K_DOWN:
+                hero.changeDirection(1)
+                hero.move(WIDTH, HEIGHT)
 
     def keyReleased(self, keyCode, modifier):
         pass
 
     def timerFired(self, dt):
-        self.Notes.update(WIDTH,HEIGHT)
-        self.clefCollision()
+        self.timer += 1
+        if self.mode == 'start':
+            self.startHero.update()
+        if self.timer % 5 == 0:
+            spawn = self.getStartHero().spawnNote()
+            self.spawnedNotes.add(spawn)
+        self.spawnedNotes.update()
+        if self.mode == 'play':
+            self.Notes.update()
+            self.Hero.update()
+            self.clefCollision()
+            self.noteCollision()
 
 
     def redrawAll(self, screen):
-        for line in self.Lines:
-            line.draw(screen)
-        self.Clefs.draw(screen)
-        for note in self.Notes:
-            note.draw(screen)
-        self.Hero.draw(screen)
-        self.NextNote.draw(screen)
-        self.drawNextText(screen)
-        self.drawTimeSignature(screen)
+        if self.mode == 'start':
+            self.startScreen.draw(screen)
+            self.startHero.draw(screen)
+            self.spawnedNotes.draw(screen)
+        elif (self.mode == 'play'):
+            for line in self.Lines:
+                line.draw(screen)
+            self.Clefs.draw(screen)
+            for note in self.Notes:
+                note.draw(screen)
+            self.Hero.draw(screen)
+            self.NextNote.draw(screen)
+            self.drawNextText(screen)
+            self.drawTimeSignature(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
@@ -81,6 +113,12 @@ class Game(object):
     def getHero(self):
         result = None
         for hero in self.Hero:
+            result = hero
+        return result
+
+    def getStartHero(self):
+        result = None
+        for hero in self.startHero:
             result = hero
         return result
 
@@ -111,6 +149,12 @@ class Game(object):
             if pygame.sprite.spritecollide(clef, self.Notes, True):
                 print('Bye Bye!')
                 print(time.time())
+
+    def noteCollision(self):
+        for note in self.Notes:
+            if pygame.sprite.spritecollide(note, self.Hero, False):
+                note.Note.playNote()
+                note.kill()
 
     def __init__(self, w=WIDTH, h=HEIGHT, f=FPS, t=TITLE):
         self.width = w

@@ -1,7 +1,7 @@
 import multiprocessing
 from Note import Notes
 import time
-import Main
+# import Main
 import threading
 
 l = [([144, 64, 48], 0), ([144, 60, 48], 0), ([128, 64, 0], 1.5), ([144, 62, 48], 0), ([128, 60, 0], 0),
@@ -92,16 +92,16 @@ def getL():
 
 
 if __name__ == '__main__':
-    game = threading.Thread(name='pygame', target=Main.main())
-    notes = threading.Thread(name='notes', target=getL())
+     # # game = threading.Thread(name='pygame', target=Main.main())
+     # notes = threading.Thread(name='notes', target=getL())
     start = time.time()
-    game.start()
-    notes.start()
-    # while True:
-    #     s = multiprocessing.Process(target=Main.main())
-    #     p = multiprocessing.Process(target=getL())
-    #     p.start(), s.start()
-    #     # print(result)
+     # game.start()
+     # notes.start()
+     while True:
+          # s = multiprocessing.Process(target=Main.main())
+          p = multiprocessing.Process(target=getL())
+          p.start()
+          # print(result)
 
     end = time.time()
     print(end - start)

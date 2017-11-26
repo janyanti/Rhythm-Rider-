@@ -7,14 +7,32 @@
 # Imports
 ##############################################
 
-import pygame
+import pygame as pg
 import os
 import Note
 from Settings import *
+import random
 
 refNote = Note.Notes(58, 112, 144, 0)
 
-class GameObject(pygame.sprite.Sprite):
+
+##############################################
+# Class Functions
+##############################################
+
+
+def load_images(filename):
+    imagefile = filename + '.png'
+    path = os.path.join('assets', imagefile)
+    image = pg.image.load(path)
+    return image
+
+
+##############################################
+# Classes
+##############################################
+
+class GameObject(pg.sprite.Sprite):
     # Generic game sprite object
     def __init__(self, x, y, image, radius):
         super(GameObject, self).__init__()
@@ -30,10 +48,10 @@ class GameObject(pygame.sprite.Sprite):
         # update the object's rect attribute with the new x,y coordinates
         w, h = self.image.get_size()
         self.width, self.height = w, h
-        self.rect = pygame.Rect(self.x - w / 2, self.y - h / 2, w, h)
+        self.rect = pg.Rect(self.x - w / 2, self.y - h / 2, w, h)
 
-    def update(self, screenWidth, screenHeight):
-        self.image = pygame.transform.rotate(self.baseImage, self.angle)
+    def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
+        self.image = pg.transform.rotate(self.baseImage, self.angle)
         vx, vy = self.velocity
         self.x += vx
         self.y += vy
@@ -51,14 +69,19 @@ class GameObject(pygame.sprite.Sprite):
 
 
 class Hero(GameObject):
-    img = pygame.image.load('assets/hero.png')
+    img = load_images('hero')
     direction = 1
 
-    def __init__(self, x, y, ):
+    def __init__(self, x, y):
         super().__init__(x, y, Hero.img, 20)
         self.dy = Lines.margin
         self.dx = 0
-        # self.velocity = (self.dx, self.dy*Hero.direction)
+        self.loadFrames()
+        self.image = self.frames[0].convert()
+        self.currentFrame = 0
+        self.prev_time = 0
+        self.velocity = (0, 0)
+        self.baseImage = self.image
 
     def changeDirection(self, dir):
         if dir == Hero.direction:
@@ -67,24 +90,65 @@ class Hero(GameObject):
 
     def move(self, screenWidth, screenHeight):
         self.y += self.dy * Hero.direction
-        self.image = pygame.transform.rotate(self.baseImage, self.angle)
         self.updateRect()
-        # wrap around, and update the rectangle again
-        if self.rect.left > screenWidth:
-            self.x -= screenWidth + self.width
-        elif self.rect.right < 0:
-            self.x += screenWidth + self.width
-        if self.rect.top > screenHeight:
-            self.y -= screenHeight + self.height
-        elif self.rect.bottom < 0:
-            self.y += screenHeight + self.height
+
+    def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
+        super().update(screenWidth, screenHeight)
+        self.animate()
+
+    def loadFrames(self):
+        images = ['hero_down', 'hero_up1',
+                  'hero_up', 'hero_down1']
+        loaded = []
+        for file in images:
+            loaded.append(load_images(file))
+        self.frames = loaded
+
+    def animate(self):
+        currTime = pg.time.get_ticks()
+        if currTime - self.prev_time > 350:
+            self.prev_time = currTime
+            self.currentFrame = (self.currentFrame + 1) % len(self.frames)
+            self.updateFrame(self.frames[self.currentFrame])
+
+    def updateFrame(self, frame):
+        self.image = frame
+        self.baseImage = frame
+
+
+class startHero(Hero):
+    spawnable = ['spawn1', 'spawn2', 'spawn3',
+                 'spawn4', 'spawn5']
+
+    def __init__(self, x=WIDTH // 2, y=0 + STEP * 2):
+        super(startHero, self).__init__(x, y)
+        self.dx = 2
+        self.dy = 0
+        self.velocity = (self.dx, self.dy)
+
+    def spawnNote(self):
+        x, y = self.x, self.y + 25
+        max = len(startHero.spawnable) - 1
+        index = random.randint(0, max)
+        spawnImage = startHero.spawnable[index]
+        image = load_images(spawnImage)
+        spawned = spawnedNote(x, y, image)
+        return spawned
+
+    def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
+        super().update()
+        dx, dy = self.velocity
+        self.x += dx
+        if not STEP < self.x < WIDTH - STEP:
+            self.dx *= -1
+        self.velocity = (self.dx, dy)
         self.updateRect()
 
 
 class MusicNote(GameObject):
-    image = pygame.image.load('assets/notehead.png')
-    stem = pygame.image.load('assets/stem.png')
-    sharp = pygame.image.load('assets/sharp.png')
+    image = load_images('notehead')
+    stem = load_images('stem')
+    sharp = load_images('sharp')
 
     def __init__(self, x, y=0, img=0, rad=20):
         super(MusicNote, self).__init__ \
@@ -106,21 +170,21 @@ class MusicNote(GameObject):
         # gets Rect attribute of note
         w, h = self.image.get_size()
         self.width, self.height = w, h
-        rect = pygame.Rect(self.x - w // 2, self.y - h // 2, w, h)
+        rect = pg.Rect(self.x - w // 2, self.y - h // 2, w, h)
         return rect
 
     def getSharpRect(self):
         # gets position of accidental
         x, y = self.x - 40, self.y + 5
         w, h = 26, 60
-        rect = pygame.Rect(x - w // 2, y - h // 2, w, h)
+        rect = pg.Rect(x - w // 2, y - h // 2, w, h)
         return rect
 
     def noteType(self):
         # returns the orientation of a given note
         x, y = self.x, self.y
-        upNote = pygame.Rect(x + 15, y-105, x+17, y)
-        downNote = pygame.Rect(x - 19, y, x-21, y+105)
+        upNote = pg.Rect(x + 15, y - 105, x + 17, y)
+        downNote = pg.Rect(x - 19, y, x - 21, y + 105)
         clef = self.Note.getClef()
         noteID = self.Note.noteID
         if clef is "Treble":
@@ -132,15 +196,44 @@ class MusicNote(GameObject):
                 return downNote
             return upNote
 
-    def update(self, screenWidth, screenHeight):
-        self.image = pygame.transform.rotate(self.baseImage, self.angle)
+    def update(self, screenWidth=WIDTH, screenHeight=WIDTH):
+        self.image = pg.transform.rotate(self.baseImage, self.angle)
         vx, vy = self.velocity
         self.x += vx
         self.y += vy
         self.updateRect()
 
 
-class Lines(pygame.sprite.Sprite):
+class spawnedNote(GameObject):
+    def __init__(self, x, y, img, rad=0):
+        super().__init__(x, y, img, rad)
+        dx = random.randint(-2, 2)
+        self.velocity = (dx, 10)
+        self.maxDx = 2
+        self.dx = 2
+        self.updateRect()
+
+    def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
+        dx, dy = self.velocity
+        self.x += dx
+        self.y += dy
+        if dx > 0:
+            dx *= 1.1
+        elif dx >= self.maxDx:
+            dx = -self.dx
+        if dx < 0:
+            dx *= 1.1
+        elif dx <= -self.maxDx:
+            dx = self.dx
+        self.velocity = (dx, dy)
+        if not 0 < self.x < WIDTH:
+            self.kill()
+        if not 0 < self.y < HEIGHT:
+            self.kill()
+        self.updateRect()
+
+
+class Lines(pg.sprite.Sprite):
     # line object used to draw staff lines
     lineSpace = HEIGHT / 16
     margin = STEP
@@ -153,11 +246,11 @@ class Lines(pygame.sprite.Sprite):
         self.height = 2
         self.width = WIDTH - 2 * Lines.margin
         w, h = self.width, self.height
-        self.rect = pygame.Rect(self.x, self.y, w, h)
+        self.rect = pg.Rect(self.x, self.y, w, h)
 
     def draw(self, screen):
         rect = self.rect
-        pygame.draw.rect(screen, BLACK, rect, 0)
+        pg.draw.rect(screen, BLACK, rect, 0)
 
     @staticmethod
     def generateStaff():
@@ -183,7 +276,8 @@ class Lines(pygame.sprite.Sprite):
         linesList.append(LedgerLine(WIDTH-STEP, STEP * 4))
         return linesList
 
-class LedgerLine(pygame.sprite.Sprite):
+
+class LedgerLine(pg.sprite.Sprite):
     def __init__(self, x, y):
         super(LedgerLine, self).__init__()
         self.x = x
@@ -191,28 +285,28 @@ class LedgerLine(pygame.sprite.Sprite):
         self.height = 452
         self.width = 4
         w, h = self.width, self.height
-        self.rect = pygame.Rect(self.x, self.y, w, h)
+        self.rect = pg.Rect(self.x, self.y, w, h)
 
     def draw(self, screen):
         rect = self.rect
-        pygame.draw.rect(screen, BLACK, rect, 0)
+        pg.draw.rect(screen, BLACK, rect, 0)
 
 
 class TrebleClef(GameObject):
-    image = pygame.image.load('assets/treble.png')
+    image = load_images('treble')
 
     def __init__(self, x, y):
         super(TrebleClef, self).__init__(x, y, TrebleClef.image, 20)
 
 
 class BassClef(GameObject):
-    image = pygame.image.load('assets/bass.png')
+    image = load_images('bass')
 
     def __init__(self, x, y):
         super(BassClef, self).__init__(x, y, BassClef.image, 20)
 
 
-class NextNote(pygame.sprite.Sprite):
+class NextNote(pg.sprite.Sprite):
     # should be a part of player class
     def __init__(self):
         super(NextNote, self).__init__()
@@ -225,6 +319,6 @@ class NextNote(pygame.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pygame.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
-        self.image = pygame.Surface((w, h))
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+        self.image = pg.Surface((w, h))
         self.image.fill(WHITE)
