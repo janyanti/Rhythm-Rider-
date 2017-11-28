@@ -12,6 +12,7 @@ import Note
 import rtmidi
 
 class Song():
-    def __init__(self, notes, sig):
+    def __init__(self, notes, sig, tempo=120):
         self.notesList = notes
         self.timeSignature = sig
+        self.tempo = tempo

@@ -10,6 +10,7 @@
 import pygame
 import rtmidi
 from Note import Notes
+import Note
 import os
 import time
 import mido
@@ -103,7 +104,6 @@ def closePlayer(player):
 def extractNotes(noteList):
     # create note objects from song file
     noteObjects = []
-    player = midiPlayer()
     for data in noteList:
         note = data[0]
         dt = data[-1]  # delta time between notes
@@ -111,10 +111,9 @@ def extractNotes(noteList):
         noteID = note[1]
         vel = note[2]
         # time.sleep(dt)
-        player.send_message(note)
+        Note.midiout.send_message(note)
         if not isNoteOff(note):
             noteObjects.append(Notes(noteID, vel, channel, dt))
-    closePlayer(player)
     return noteObjects
 
 

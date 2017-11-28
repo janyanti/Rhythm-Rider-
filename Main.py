@@ -8,12 +8,15 @@
 ##############################################
 import os
 import math
+import string
+
 import pygame
 import time
 import GameObjects
 from Settings import *
 import pygame
 import queue
+import pygame_textinput
 import threading
 
 q = queue.Queue()
@@ -21,15 +24,19 @@ q = queue.Queue()
 
 class Game(object):
     def init(self):
+        self.modes = MODES
         self.mode = 'start'
         self.timer = 0
         self.NextNote = pygame.sprite.Group(GameObjects.NextNote())
         self.NoteFont = pygame.font.SysFont('agency fb', 100)
         self.GameFont = pygame.font.SysFont('agency fb', 30)
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
+        self.inputText = ''
 
         # start screen
         self.initStart()
+        self.initSelect()
+
 
         # help screen
         # helpSprite = pygame.sprite.Sprite()
@@ -57,9 +64,19 @@ class Game(object):
         self.startScreen = pygame.sprite.Group(startSprite)
         self.startHero = pygame.sprite.Group(GameObjects.startHero())
         self.spawnedNotes = pygame.sprite.Group()
-        playButton = GameObjects.Button(640, 540, 'play')
+        playButton = GameObjects.Button(640, 540, 'select')
         helpButton = GameObjects.Button(640, 650, 'help')
         self.startButtons = pygame.sprite.Group(playButton, helpButton)
+
+    def initSelect(self):
+        # make a screen for this mode
+        self.userInput = queue.Queue()
+
+    def selectMode(self, mode):
+        command = self.modes[mode]
+        eval(command)
+        self.mode = mode
+
 
     def initGame(self):
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
@@ -68,6 +85,9 @@ class Game(object):
         self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
         self.Notes.add(GameObjects.MusicNote(WIDTH * 2 + 180, 270))
         self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH // 2, 135))
+
+    def selectInput(self, char):
+        self.inputText += char
 
     def keyPressed(self, keyCode, modifier):
         if self.mode == 'play':
@@ -78,6 +98,18 @@ class Game(object):
             if keyCode == pygame.K_DOWN:
                 hero.changeDirection(1)
                 hero.move(WIDTH, HEIGHT)
+        if self.mode == 'select':
+            if keyCode == pygame.K_BACKSPACE:
+                self.inputText = self.inputText[:-1]
+            elif not keyCode == pygame.K_RETURN:
+                char = chr(keyCode)
+                if char in string.printable:
+                    self.selectInput(char)
+            else:
+                time.sleep(0.5)
+                self.selectMode('play')
+
+
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -95,24 +127,38 @@ class Game(object):
             self.Hero.update()
             self.clefCollision()
             self.noteCollision()
+        if self.mode == 'select':
+            pass
 
     def redrawAll(self, screen):
         if self.mode == 'start':
-            self.startScreen.draw(screen)
-            self.startHero.draw(screen)
-            self.spawnedNotes.draw(screen)
-            self.startButtons.draw(screen)
+            self.drawStart(screen)
+        elif self.mode == 'play':
+            self.drawGame(screen)
+        elif self.mode == 'select':
+            self.drawSelect(screen)
+            # self.inputText.get_surface().draw(screen)
 
-        elif (self.mode == 'play'):
-            for line in self.Lines:
-                line.draw(screen)
-            self.Clefs.draw(screen)
-            for note in self.Notes:
-                note.draw(screen)
-            self.Hero.draw(screen)
-            self.NextNote.draw(screen)
-            self.drawNextText(screen)
-            self.drawTimeSignature(screen)
+    def drawStart(self, screen):
+        self.startScreen.draw(screen)
+        self.startHero.draw(screen)
+        self.spawnedNotes.draw(screen)
+        self.startButtons.draw(screen)
+
+    def drawSelect(self, screen):
+        file = self.GameFont.render(self.inputText, False, BLACK, None)
+        screen.blit(file, (0, 0))
+
+    def drawGame(self, screen):
+        for line in self.Lines:
+            line.draw(screen)
+        self.Clefs.draw(screen)
+        for note in self.Notes:
+            note.draw(screen)
+        self.Hero.draw(screen)
+        self.NextNote.draw(screen)
+        self.drawNextText(screen)
+        self.drawTimeSignature(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
@@ -134,8 +180,8 @@ class Game(object):
         for button in self.startButtons:
             test = button.rect
             if test.collidepoint(x, y):
-                self.mode = button.click(button.name)
-                self.initGame()
+                mode = button.name
+                self.selectMode(mode)
 
     def drawNextText(self, screen):
         note = self.NoteFont.render("C#", False, BLACK, None)
@@ -191,9 +237,7 @@ class Game(object):
 
         # call game-specific initialization
         self.init()
-        print('hi')
-        # if self.count == 0:
-        #     self.t.start()
+        self.screen = screen
         playing = True
         while playing:
             time = clock.tick(self.fps)
@@ -219,10 +263,6 @@ class Game(object):
                     playing = False
             screen.fill(self.bgColor)
             self.redrawAll(screen)
-            # try:
-            #     print(q.get())
-            # except:
-            #     print('oh well')
             pygame.display.flip()
 
         pygame.quit()

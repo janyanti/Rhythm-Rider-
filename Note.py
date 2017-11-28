@@ -17,6 +17,15 @@ import string
 # Class Functions
 ##############################################
 
+# makes a port to output midi files
+midiout = rtmidi.MidiOut()
+available_ports = midiout.get_ports()
+if available_ports:
+    midiout.open_port(0)
+else:
+    midiout.open_virtual_port("My virtual output")
+
+
 def digitToNotes():
     # maps notes to octaves
     result = []
@@ -38,16 +47,6 @@ def notesLadder():
         note = Notes(noteID, velocity, channel)
         note.playNote()
 
-
-def getPlayer():
-    # makes a port to output midi files
-    midiout = rtmidi.MidiOut()
-    available_ports = midiout.get_ports()
-    if available_ports:
-        midiout.open_port(0)
-    else:
-        midiout.open_virtual_port("My virtual output")
-    return midiout
 
 
 def listToDict(list):
@@ -80,11 +79,10 @@ class Notes():
 
     def playNote(self):
         note = [self.channel, self.noteID, self.velocity]
-        player = getPlayer()
-        player.send_message(note)
-        time.sleep(0.5)
-        note[-1] = 0
-        player.send_message(note)
+        midiout.send_message(note)
+        # time.sleep(0.5)
+        # note[-1] = 0
+        # midiout.send_message(note)
 
     def getClef(self):
         # returns clef classification of note
@@ -107,18 +105,14 @@ class Notes():
         # returns position of note based on real music notation
         pos = None
         clef = self.getClef()
-        print(self)
         note = self.getBaseNote()
-        print(note)
         if clef is 'Treble':
             noteRef = Notes(60)
             dist = math.ceil((note.noteID - noteRef.noteID) / 2)
-            print(dist)
             pos = 270 - dist * NOTESTEP
         elif clef is 'Bass':
             noteRef = Notes(36)
             dist = math.ceil((note.noteID - noteRef.noteID) / 2)
-            print(dist)
             pos = 605 - (dist) * NOTESTEP
         return pos
 

@@ -92,7 +92,7 @@ def getL():
 
 
 if __name__ == '__main__':
-     # # game = threading.Thread(name='pygame', target=Main.main())
+     # game = threading.Thread(name='pygame', target=Main.main())
      # notes = threading.Thread(name='notes', target=getL())
     start = time.time()
      # game.start()
