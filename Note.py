@@ -90,6 +90,14 @@ class Notes():
             return Notes.Clefs[-1]
         return Notes.Clefs[0]
 
+    def getNoteName(self):
+        name = list(self.note)
+        for char in name:
+            if char in string.digits or char is '-':
+                name.remove(char)
+        name = ''.join(name)
+        return name
+
     def getOctave(self):
         # returns octave of note
         parse = self.note

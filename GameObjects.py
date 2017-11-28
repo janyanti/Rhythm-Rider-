@@ -58,8 +58,8 @@ class GameObject(pg.sprite.Sprite):
     def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
         self.image = pg.transform.rotate(self.baseImage, self.angle)
         vx, vy = self.velocity
-        self.x += vx
-        self.y += vy
+        # self.x += vx
+        # self.y += vy
         self.updateRect()
         # wrap around, and update the rectangle again
         if self.rect.left > screenWidth:
@@ -143,7 +143,7 @@ class startHero(Hero):
     def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
         super().update()
         dx, dy = self.velocity
-        self.x += dx
+        # self.x += dx
         if not STEP < self.x < WIDTH - STEP:
             self.dx *= -1
         self.velocity = (self.dx, dy)
@@ -155,10 +155,11 @@ class MusicNote(GameObject):
     stem = load_images('stem')
     sharp = load_images('sharp')
 
-    def __init__(self, x, y=0, img=0, rad=20):
+    def __init__(self, x, note, y=0, img=0, rad=20):
         super(MusicNote, self).__init__ \
             (x, y, MusicNote.image, rad)
-        self.Note = Note.Notes.toNote([144, 60, 112, 0])
+        # self.Note = Note.Notes.toNote([144, 70, 112, 0])
+        self.Note = note
         self.velocity = (-5, 0)
         self.y = self.Note.getHeight()
 

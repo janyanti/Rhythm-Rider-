@@ -7,16 +7,14 @@
 # Imports
 ##############################################
 
-import pygame
-import rtmidi
-from Note import Notes
-import Note
-import os
-import time
 import mido
+import rtmidi
 from mido import MidiFile
+import Note
+from Note import Notes
+from Song import Song
 
-filename = 'pachelbel_canon.mid'
+filename = 'bach_minuet.mid'
 mid = MidiFile('music/' + filename)
 textOut = open('assets/' + filename.split('.')[0], 'w')
 
@@ -35,9 +33,10 @@ def parseMIDI(file):
             song.append((notes, time))
     return song
 
+
 def findTimeSignature(file):
     time = []
-    for (i,msg) in enumerate(file):
+    for (i, msg) in enumerate(file):
         if isTimeSignature(msg):
             currTime = msg
             num, den = currTime.numerator, currTime.denominator
@@ -59,15 +58,18 @@ def isTimeSignature(msg):
 def isTempo(msg):
     return msg.type == 'set_tempo'
 
+
 def isNote(msg):
     # check if meta message denotes note played
     msgType = msg.type
     return 'note_on' == msgType or 'note_off' == msgType
 
+
 def isNoteOff(msg):
     # filter out 'note_off' messages
     channel, velocity = msg[0], msg[-1]
     return channel < 144 or velocity == 0
+
 
 def getNotePairs(song):
     # find on/off note pairs
@@ -82,7 +84,7 @@ def getNotePairs(song):
             nextNote = elem[1]
             if nextNote == currNote:
                 note_off = notes.pop(i)
-                pairs.append((note_on,note_off))
+                pairs.append((note_on, note_off))
                 break
     return pairs
 
@@ -96,6 +98,7 @@ def midiPlayer():
     else:
         midiout.open_virtual_port("Virtual output")
     return midiout
+
 
 def closePlayer(player):
     del player
@@ -124,13 +127,17 @@ def generateSong(mid):
     print('Time:', mid.length)
     print('Bytes:', song, len(song))
     time_sig = findTimeSignature(mid)
-    print('Time Signature:' ,time_sig)
+    print('Time Signature:', time_sig)
     tempo = findTempo(mid)
     print('Tempo:', tempo)
     pairs = getNotePairs(song)
-    print('Pairs:' ,pairs, len(pairs))
+    print('Pairs:', pairs, len(pairs))
     output = extractNotes(song)
-    print('Notes:',output, len(output))
+    print('Notes:', output, len(output))
+    song = Song(output, time_sig, tempo)
+    return song
 
-generateSong(mid)
+
+song = generateSong(mid)
+
 textOut.close()
