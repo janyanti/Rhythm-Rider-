@@ -60,6 +60,7 @@ class Game(object):
         pass
 
     def initStart(self):
+        # create starting conditions
         startSprite = pygame.sprite.Sprite()
         startSprite.image = pygame.image.load('assets/startscreen.png')
         startSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
@@ -71,18 +72,16 @@ class Game(object):
         self.startButtons = pygame.sprite.Group(playButton, helpButton)
 
     def initSelect(self):
-        # make a screen for this mode
+        # define screen/attributes for this mode
         selectSprite = pygame.sprite.Sprite()
         selectSprite.image = pygame.image.load('assets/selectscreen.png')
         selectSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
         self.selectScreen = pygame.sprite.Group(selectSprite)
 
-
     def selectMode(self, mode):
         command = self.modes[mode]
         eval(command)
         self.mode = mode
-
 
     def initGame(self):
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
@@ -100,7 +99,6 @@ class Game(object):
         self.splitNote(self.targetNotes[0])
         print(self.targetNotes)
         self.numerator, self.denominator = self.player.song.getTimeSignature()
-
 
     def selectInput(self, char):
         self.inputText += char
@@ -130,8 +128,6 @@ class Game(object):
             else:
                 time.sleep(0.5)
                 self.selectMode('play')
-
-
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -244,9 +240,6 @@ class Game(object):
                 self.player.hitNote(note)
                 self.splitNote(self.targetNotes[0])
                 self.player.accuracy = ((self.player.score / self.total * 100))
-
-
-
 
     def __init__(self, w=WIDTH, h=HEIGHT, f=FPS, t=TITLE):
         self.width = w

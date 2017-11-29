@@ -151,26 +151,43 @@ class startHero(Hero):
 
 
 class MusicNote(GameObject):
-    image = load_images('notehead')
+    noteheads = ['notehead', 'halfnotehead', 'wholenotehead']
+
     stem = load_images('stem')
     sharp = load_images('sharp')
 
     def __init__(self, x, note, y=0, img=0, rad=20):
-        super(MusicNote, self).__init__ \
-            (x, y, MusicNote.image, rad)
-        # self.Note = Note.Notes.toNote([144, 70, 112, 0])
         self.Note = note
-        self.velocity = (-5, 0)
+        self.type = note.getType()
+        self.getNoteHeadIndex()
+        image = load_images(MusicNote.noteheads[self.noteHeadIndex])
+        super(MusicNote, self).__init__ \
+            (x, y, image, rad)
+        # self.Note = Note.Notes.toNote([144, 70, 112, 0])
+        self.velocity = (-4, 0)
         self.y = self.Note.getHeight()
 
     def draw(self, screen):
         self.rect = self.getRect()
         screen.blit(self.image, self.rect)
         stemRect = self.noteType()
-        screen.blit(MusicNote.stem, stemRect)
+        if not self.type == 'whole':
+            screen.blit(MusicNote.stem, stemRect)
         sharpRect = self.getSharpRect()
         if self.Note.isAccidental():
             screen.blit(MusicNote.sharp, sharpRect)
+
+    def getNoteHeadIndex(self):
+        typ = self.type
+        index = 0
+        if typ is 'whole':
+            index = 2
+        elif typ is 'half':
+            index = 1
+        else:
+            index = 0
+        self.noteHeadIndex = index
+
 
     def getRect(self):
         # gets Rect attribute of note

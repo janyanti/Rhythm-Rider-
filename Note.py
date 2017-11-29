@@ -66,13 +66,14 @@ class Notes():
     noteConvert = listToDict(digitToNotes())
     Clefs = ['Bass', 'Treble']
 
-    def __init__(self, noteID, velocity=112, channel=144, dt=0):
-        self.noteID = noteID
-        self.velocity = velocity
-        self.channel = channel
+    def __init__(self, ID, vel=112, chan=144, dt=0, typ='quarter'):
+        self.noteID = ID
+        self.velocity = vel
+        self.channel = chan
         self.dt = dt
-        self.note = Notes.noteConvert[noteID]
-        self.type = self.getClef()
+        self.type = typ
+        self.note = Notes.noteConvert[ID]
+        self.clef = self.getClef()
 
     def __repr__(self):
         return str(self.note)
@@ -89,6 +90,9 @@ class Notes():
         if self.noteID >= 60:
             return Notes.Clefs[-1]
         return Notes.Clefs[0]
+
+    def getPosition(self):
+        return self.dt
 
     def getNoteName(self):
         name = list(self.note)
@@ -121,7 +125,7 @@ class Notes():
         elif clef is 'Bass':
             noteRef = Notes(36)
             dist = math.ceil((note.noteID - noteRef.noteID) / 2)
-            pos = 605 - (dist) * NOTESTEP
+            pos = 615 - (dist) * NOTESTEP
         return pos
 
     def getBaseNote(self):
@@ -129,6 +133,9 @@ class Notes():
         if self.isAccidental():
             return Notes(noteID - 1, self.velocity, self.channel, self.dt)
         return self
+
+    def getType(self):
+        return self.type
 
     def isAccidental(self):
         note = self.note
