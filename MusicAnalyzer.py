@@ -7,21 +7,23 @@
 # Imports
 ##############################################
 
-import mido
-import rtmidi
-import sys
-from mido import MidiFile
-import Note
 import copy
-from Settings import *
+import sys
+import mido
+from mido import MidiFile
 from Note import Notes
+from Settings import *
 from Song import Song
 
 # move this to generate song method with filename as argument
-filename = 'pachelbel_canon.mid'
+filename = 'ode_to_joy.mid'
 mid = MidiFile('music/' + filename)
 textOut = open('assets/' + filename.split('.')[0], 'w')
 
+
+##############################################
+# Class Functions
+##############################################
 
 def parseMIDI(file):
     # read midi file and filter notes
@@ -154,7 +156,6 @@ def extractNoteType(PPQ, BPM, dt):
             currType = noteType[key]
             leastDist = dist
     return currType
-
 
 
 def generateSong(mid):

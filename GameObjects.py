@@ -77,7 +77,7 @@ class Hero(GameObject):
     img = load_images('hero')
     direction = 1
 
-    def __init__(self, x, y):
+    def __init__(self, x=WIDTH // 2, y=STEP * 5):
         super().__init__(x, y, Hero.img, 20)
         self.dy = Lines.margin
         self.dx = 0
@@ -95,6 +95,10 @@ class Hero(GameObject):
 
     def move(self, screenWidth, screenHeight):
         self.y += self.dy * Hero.direction
+        self.updateRect()
+
+    def cpuMove(self, height):
+        self.y = height
         self.updateRect()
 
     def update(self, screenWidth=WIDTH, screenHeight=HEIGHT):
@@ -152,7 +156,6 @@ class startHero(Hero):
 
 class MusicNote(GameObject):
     noteheads = ['notehead', 'halfnotehead', 'wholenotehead']
-
     stem = load_images('stem')
     sharp = load_images('sharp')
 
@@ -163,8 +166,7 @@ class MusicNote(GameObject):
         image = load_images(MusicNote.noteheads[self.noteHeadIndex])
         super(MusicNote, self).__init__ \
             (x, y, image, rad)
-        # self.Note = Note.Notes.toNote([144, 70, 112, 0])
-        self.velocity = (-4, 0)
+        self.velocity = (-6, 0)
         self.y = self.Note.getHeight()
 
     def draw(self, screen):

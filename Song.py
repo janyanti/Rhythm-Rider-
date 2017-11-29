@@ -7,10 +7,13 @@
 # Imports
 ##############################################
 
-from Settings import *
-import Note
 from GameObjects import MusicNote
-import rtmidi
+from Settings import *
+
+
+##############################################
+# Class
+##############################################
 
 class Song():
     noteDistance = {'eighth': STEP * 2 + NOTESTEP, 'quarter': STEP * 4,
@@ -65,4 +68,4 @@ class Song():
                 result[pos] = [elem]
             else:
                 result[pos].append(elem)
-        return (result)
+        return result

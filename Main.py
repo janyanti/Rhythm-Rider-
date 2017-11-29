@@ -31,7 +31,8 @@ class Game(object):
         self.GameFont = pygame.font.SysFont('alba', 35)
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
         self.inputText = ''
-        self.gameMode = 'treble'
+        self.gameMode = 'bass'
+        self.hasCPU = True
 
         # start screen
         self.initStart()
@@ -87,17 +88,23 @@ class Game(object):
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
         self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
         self.Clefs = pygame.sprite.Group(clefs)
-        # self.Notes = pygame.sprite.Group(GameObjects.MusicNote(WIDTH * 2, 270))
-        # self.Notes.add(GameObjects.MusicNote(WIDTH * 2 + 180, 270))
         self.Notes = pygame.sprite.Group(self.player.musicNotes)
         self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH // 2, 135))
         if self.gameMode == 'treble':
             self.targetNotes = self.player.getTrebleNotes()
+            self.CPUTargets = self.player.getBassNotes()
+            cpuHeight = 540
         else:
+            self.getHero().y = 540
             self.targetNotes = self.player.getBassNotes()
+            self.CPUTargets = self.player.getTrebleNotes()
+            cpuHeight = 135
+        if self.hasCPU:
+            self.CPU = pygame.sprite.Group(GameObjects.Hero(y=cpuHeight))
+            self.moveCPU()
         self.total = len(self.targetNotes)
         self.splitNote(self.targetNotes[0])
-        print(self.targetNotes)
+        # print(self.targetNotes)
         self.numerator, self.denominator = self.player.song.getTimeSignature()
 
     def selectInput(self, char):
@@ -143,6 +150,8 @@ class Game(object):
         if self.mode == 'play':
             self.Notes.update()
             self.Hero.update()
+            if self.hasCPU:
+                self.CPU.update()
             self.clefCollision()
             self.noteCollision()
         if self.mode == 'select':
@@ -155,7 +164,7 @@ class Game(object):
             self.drawGame(screen)
         elif self.mode == 'select':
             self.drawSelect(screen)
-            # self.inputText.get_surface().draw(screen)
+
 
     def drawStart(self, screen):
         self.startScreen.draw(screen)
@@ -165,7 +174,7 @@ class Game(object):
 
     def drawSelect(self, screen):
         self.selectScreen.draw(screen)
-        file = self.GameFont.render(self.inputText, False, BLACK, None)
+        file = self.GameFont.render(self.inputText, True, BLACK, None)
         screen.blit(file, (STEP * 3, 285))
 
     def drawGame(self, screen):
@@ -175,9 +184,12 @@ class Game(object):
         for note in self.Notes:
             note.draw(screen)
         self.Hero.draw(screen)
+        if self.hasCPU:
+            self.CPU.draw(screen)
         self.NextNote.draw(screen)
         self.drawNextText(screen)
         self.drawTimeSignature(screen)
+
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
@@ -186,6 +198,12 @@ class Game(object):
     def getHero(self):
         result = None
         for hero in self.Hero:
+            result = hero
+        return result
+
+    def getCPU(self):
+        result = None
+        for hero in self.CPU:
             result = hero
         return result
 
@@ -203,17 +221,17 @@ class Game(object):
                 self.selectMode(mode)
 
     def drawNextText(self, screen):
-        note = self.NoteFont.render(str(self.currNote), False, BLACK, None)
+        note = self.NoteFont.render(str(self.currNote), True, BLACK, None)
         screen.blit(note, (WIDTH // 2, HEIGHT // 2 - 45))
-        octave = self.GameFont.render(str(self.currOctave), False, BLACK, None)
+        octave = self.GameFont.render(str(self.currOctave), True, BLACK, None)
         screen.blit(octave, (WIDTH // 2 + STEP * 4, HEIGHT // 2 + STEP))
         acc = "Accuracy: %.2f" % (self.player.accuracy) + '%'
         accuracy = self.GameFont.render(acc, True, BLACK, None)
         screen.blit(accuracy, (WIDTH - 10 * STEP, NOTESTEP * 2))
 
     def drawTimeSignature(self, screen):
-        numer = self.timeFont.render(str(self.numerator), False, BLACK, None)
-        denom = self.timeFont.render(str(self.denominator), False, BLACK, None)
+        numer = self.timeFont.render(str(self.numerator), True, BLACK, None)
+        denom = self.timeFont.render(str(self.denominator), True, BLACK, None)
         screen.blit(numer, (STEP * 6, -NOTESTEP * 5))
         screen.blit(denom, (STEP * 6, -NOTESTEP))
         screen.blit(numer, (STEP * 6, NOTESTEP * 17))
@@ -240,6 +258,27 @@ class Game(object):
                 self.player.hitNote(note)
                 self.splitNote(self.targetNotes[0])
                 self.player.accuracy = ((self.player.score / self.total * 100))
+        if self.hasCPU:
+            self.cpuCollision()
+
+    def cpuCollision(self):
+        for note in self.Notes:
+            if pygame.sprite.spritecollide(note, self.CPU, False):
+                note.Note.playNote()
+                self.cpuHit(note)
+                note.kill()
+                self.moveCPU()
+
+    def moveCPU(self):
+        if not self.CPUTargets == []:
+            target = self.CPUTargets.pop(0)
+            height = target.getHeight()
+            self.getCPU().cpuMove(height)
+
+    def cpuHit(self, note):
+        for (i, testnote) in enumerate(self.CPUTargets):
+            if testnote == note:
+                self.CPUTargets.pop(i)
 
     def __init__(self, w=WIDTH, h=HEIGHT, f=FPS, t=TITLE):
         self.width = w
