@@ -15,6 +15,9 @@ from Player import Player
 from Settings import *
 import pygame
 import queue
+import tkinter
+from tkinter import filedialog
+
 import threading
 
 q = queue.Queue()
@@ -26,10 +29,11 @@ class Game(object):
     def init(self):
         self.modes = MODES
         self.mode = 'start'
-        self.filename = ''
+        self.filename = 'fur_elise.mid'
         self.timer = 0
         self.NoteFont = pygame.font.SysFont('alba', 100)
         self.GameFont = pygame.font.SysFont('alba', 35)
+        self.FileFont = pygame.font.SysFont('agency fb', 45)
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
         self.inputText = ''
         self.gameMode = 'bass'
@@ -88,7 +92,7 @@ class Game(object):
         self.mode = mode
 
     def initGame(self):
-        self.player = Player(MusicAnalyzer.song)
+        self.player = Player(MusicAnalyzer.generateSong(self.filename))
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
         self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
         self.Clefs = pygame.sprite.Group(clefs)
@@ -110,8 +114,6 @@ class Game(object):
         self.splitNote(self.targetNotes.pop(0))
         self.numerator, self.denominator = self.player.song.getTimeSignature()
 
-    def selectInput(self, char):
-        self.inputText += char
 
     def splitNote(self, note):
         self.currNote = note.getNoteName()
@@ -129,15 +131,20 @@ class Game(object):
             if keyCode == pygame.K_p:
                 self.isPaused = not self.isPaused
         if self.mode == 'select':
-            if keyCode == pygame.K_BACKSPACE:
-                self.inputText = self.inputText[:-1]
-            elif not keyCode == pygame.K_RETURN:
-                char = chr(keyCode)
-                if char in string.printable:
-                    self.selectInput(char)
-            else:
-                time.sleep(0.5)
-                self.selectMode('play')
+            self.keySelect(keyCode)
+
+    def keySelect(self, keyCode):
+        root = tkinter.Tk()
+        root.withdraw()
+        if keyCode == pygame.K_BACKSPACE:
+            file_path = filedialog.askopenfilename()
+            self.inputText = str(file_path)
+        else:
+            time.sleep(0.5)
+            if not self.inputText == '' and self.checkFilePath(self.inputText):
+                self.filename = self.inputText
+            self.selectMode('play')
+
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -178,7 +185,7 @@ class Game(object):
     def drawSelect(self, screen):
         self.selectScreen.draw(screen)
         self.songFiles.draw(screen)
-        file = self.GameFont.render(self.inputText, True, BLACK, None)
+        file = self.FileFont.render(self.inputText, True, BLACK, None)
         screen.blit(file, (STEP * 3, 285))
 
     def generateSongFiles(self):
@@ -226,16 +233,21 @@ class Game(object):
         return result
 
     def onClick(self, x, y):
-        for button in self.startButtons:
-            test = button.rect
-            if test.collidepoint(x, y):
-                mode = button.name
-                self.selectMode(mode)
-        for songFile in self.songFiles:
-            test = songFile.rect
-            print('hi')
-            if test.collidepoint(x, y):
-                self.drawSurface(songFile)
+        if self.mode == 'select':
+            for songFile in self.songFiles:
+                test = songFile.rect
+                if test.collidepoint(x, y):
+                    songFile.click()
+                    self.filename = songFile.id
+        if self.mode == 'start':
+            for button in self.startButtons:
+                test = button.rect
+                if test.collidepoint(x, y):
+                    mode = button.name
+                    self.selectMode(mode)
+
+    def checkFilePath(self, path):
+        return not os.path.isdir(path) and os.path.isfile(path)
 
     def drawSurface(self, songFile):
         x, y, w, h = songFile.getRect()
@@ -289,17 +301,20 @@ class Game(object):
                 # self.splitNote(self.player.notesList[0])
 
     def noteCollision(self):
-        for musicNote in self.Notes:
-            if pygame.sprite.collide_circle(musicNote, self.getHero()):
-                note = musicNote.Note
-                musicNote.Note.playNote()
-                musicNote.kill()
-                self.player.hitNote(musicNote)
-                self.player.notesList.remove(note)
-                self.splitNote(self.targetNotes.pop(0))
-                self.player.accuracy = ((self.player.score / self.total * 100))
-        if self.hasCPU:
-            self.cpuCollision()
+        try:
+            for musicNote in self.Notes:
+                if pygame.sprite.collide_circle(musicNote, self.getHero()):
+                    note = musicNote.Note
+                    musicNote.Note.playNote()
+                    musicNote.kill()
+                    self.player.hitNote(musicNote)
+                    self.player.notesList.remove(note)
+                    self.splitNote(self.targetNotes.pop(0))
+                    self.player.accuracy = ((self.player.score / self.total * 100))
+            if self.hasCPU:
+                self.cpuCollision()
+        except:
+            pass
 
     def cpuCollision(self):
         for note in self.Notes:

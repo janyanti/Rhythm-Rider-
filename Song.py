@@ -16,7 +16,7 @@ from Settings import *
 ##############################################
 
 class Song():
-    noteDistance = {'eighth': STEP * 3, 'quarter': STEP * 6,
+    noteDistance = {'16th': NOTESTEP * 3, 'eighth': STEP * 3, 'quarter': STEP * 6,
                     'half': STEP * 9, 'whole': STEP * 12}
 
     def __init__(self, notes, sig, tempo=120):

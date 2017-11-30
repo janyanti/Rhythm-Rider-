@@ -29,7 +29,7 @@ MODES = {'play': 'self.initGame()', 'select': 'self.initSelect',
 
 # music constants
 TICKS = 60000
-INTERCEPT = 1.4
+INTERCEPT = 1.6
 SLOPE = 0.0335
 
 # grpahics

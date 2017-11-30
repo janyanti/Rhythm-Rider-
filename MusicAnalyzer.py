@@ -16,9 +16,9 @@ from Settings import *
 from Song import Song
 
 # move this to generate song method with filename as argument
-filename = 'bach_minuet.mid'
-mid = MidiFile('music/' + filename)
-textOut = open('assets/' + filename.split('.')[0], 'w')
+# filename = 'fur_elise.mid'
+# mid = MidiFile(filename)
+# textOut = open('assets/' + filename.split('.')[0], 'w')
 
 
 ##############################################
@@ -30,11 +30,11 @@ def parseMIDI(file):
     time = 0
     song = []
     for msg in file:
-        print(msg)
+        # print(msg)
         if isNote(msg):
             time += msg.time
             notes = msg.bytes()
-            textOut.write(str(notes) + str(round(time, 2)) + '\n')
+            # textOut.write(str(notes) + str(round(time, 2)) + '\n')
             song.append([notes, formatTime(time)])
     return song
 
@@ -144,7 +144,7 @@ def extractNotes(noteList):
 
 
 def extractNoteType(PPQ, BPM, dt):
-    noteType = {0.5: 'eighth', 1: 'quarter', 2: 'half', 4: 'whole'}
+    noteType = {0.25: '16th', 0.5: 'eighth', 1: 'quarter', 2: 'half', 4: 'whole'}
     ticks = (TICKS / (PPQ * BPM)) * (10 ** (-3))
     notePPQ = dt / ticks
     comp = notePPQ / PPQ
@@ -159,7 +159,7 @@ def extractNoteType(PPQ, BPM, dt):
 
 
 def generateSong(filename):
-    mid = MidiFile('music/' + filename)
+    mid = MidiFile(filename)
     print('Song Name:', mid.tracks[0].name)
     print("Ticks:", mid.ticks_per_beat)
     PPQ = mid.ticks_per_beat
@@ -178,7 +178,6 @@ def generateSong(filename):
     result = Song(output, timeSig, BPM)
     return result
 
-
-song = generateSong(filename)
-
-textOut.close()
+# song = generateSong(filename)
+#
+# textOut.close()

@@ -13,8 +13,6 @@ import Note
 from Settings import *
 import random
 
-refNote = Note.Notes(58, 112, 144, 0)
-
 
 ##############################################
 # Class Functions
@@ -191,7 +189,6 @@ class MusicNote(GameObject):
             index = 0
         self.noteHeadIndex = index
 
-
     def getRect(self):
         # gets Rect attribute of note
         w, h = self.image.get_size()
@@ -298,8 +295,8 @@ class Lines(pg.sprite.Sprite):
             linesList.append(line)
             y += Lines.margin
 
-        linesList.append(LedgerLine(STEP,STEP*4))
-        linesList.append(LedgerLine(WIDTH-STEP, STEP * 4))
+        linesList.append(LedgerLine(STEP, STEP * 4))
+        linesList.append(LedgerLine(WIDTH - STEP, STEP * 4))
         return linesList
 
 
@@ -374,21 +371,47 @@ class Button(pg.sprite.Sprite):
 
 class SongFile(pg.sprite.Sprite):
     songs = ['canon', 'the_entertainer', 'minuet', 'ode_to_joy']
+    status = dict()
+    songFileList = []
 
     def __init__(self, x, y, index=0):
         super(SongFile, self).__init__()
         self.x, self.y = x, y
+        self.name = SongFile.songs[index]
+        self.id = 'music/' + self.name + '.mid'
         self.image = load_images(SongFile.songs[index])
         w, h = self.image.get_size()
         self.width, self.height = w, h
         self.defineRect()
+        SongFile.status[self.name] = False
+        SongFile.songFileList.append(self)
 
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
 
     def getRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
         return x, y, w, h
+
+    def click(self):
+        status = SongFile.status
+        if status[self.name]:
+            SongFile.status[self.name] = False
+            self.recolor()
+            return
+        for key in status:
+            status[key] = False
+        SongFile.status[self.name] = True
+        for file in SongFile.songFileList:
+            file.recolor()
+
+    def recolor(self):
+        imageName = self.name
+        status = SongFile.status[imageName]
+        if status:
+            imageName += '_on'
+        self.image = load_images(imageName)
+        self.update()
