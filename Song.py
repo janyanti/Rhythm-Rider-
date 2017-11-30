@@ -16,13 +16,14 @@ from Settings import *
 ##############################################
 
 class Song():
-    noteDistance = {'eighth': STEP * 2 + NOTESTEP, 'quarter': STEP * 4,
-                    'half': STEP * 6, 'whole': STEP * 12}
+    noteDistance = {'eighth': STEP * 3, 'quarter': STEP * 6,
+                    'half': STEP * 9, 'whole': STEP * 12}
 
     def __init__(self, notes, sig, tempo=120):
         self.notesList = notes
         self.timeSignature = sig
         self.tempo = tempo
+        self.noteVelocity = self.getVelocity()
         self.startWidth = WIDTH + WIDTH // 2
         self.groups = self.groupNotes()
         self.musicNotes = self.generateNotes()
@@ -30,15 +31,17 @@ class Song():
 
     def generateNotes(self):
         result = []
+        dx = self.noteVelocity
         step = STEP * 3
         currWidth = self.startWidth
         for key in self.groups:
+            steps = []
             for note in self.groups[key]:
                 key = note.getType()
-                step = Song.noteDistance[key]
-                musicNote = MusicNote(currWidth, note)
+                steps.append(Song.noteDistance[key])
+                musicNote = MusicNote(currWidth, note, dx)
                 result.append(musicNote)
-            currWidth += step
+            currWidth += min(steps)
         return result
 
     def getTimeSignature(self):
@@ -68,4 +71,10 @@ class Song():
                 result[pos] = [elem]
             else:
                 result[pos].append(elem)
+        print(result)
         return result
+
+    def getVelocity(self):
+        tempo = self.getTempo()
+        dx = INTERCEPT + SLOPE * tempo
+        return dx

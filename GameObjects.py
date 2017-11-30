@@ -77,9 +77,9 @@ class Hero(GameObject):
     img = load_images('hero')
     direction = 1
 
-    def __init__(self, x=WIDTH // 2, y=STEP * 5):
+    def __init__(self, x=WIDTH // 3, y=STEP * 5):
         super().__init__(x, y, Hero.img, 20)
-        self.dy = Lines.margin
+        self.dy = Lines.margin // 2
         self.dx = 0
         self.loadFrames()
         self.image = self.frames[0].convert()
@@ -159,14 +159,15 @@ class MusicNote(GameObject):
     stem = load_images('stem')
     sharp = load_images('sharp')
 
-    def __init__(self, x, note, y=0, img=0, rad=20):
+    def __init__(self, x, note, dx, y=0, img=0, rad=20, ):
         self.Note = note
         self.type = note.getType()
         self.getNoteHeadIndex()
         image = load_images(MusicNote.noteheads[self.noteHeadIndex])
         super(MusicNote, self).__init__ \
             (x, y, image, rad)
-        self.velocity = (-6, 0)
+        self.dx = dx
+        self.velocity = (-self.dx, 0)
         self.y = self.Note.getHeight()
 
     def draw(self, screen):
@@ -369,3 +370,25 @@ class Button(pg.sprite.Sprite):
     def click(self, actionCode):
         action = Button.actions[actionCode]
         return action
+
+
+class SongFile(pg.sprite.Sprite):
+    songs = ['canon', 'the_entertainer', 'minuet', 'ode_to_joy']
+
+    def __init__(self, x, y, index=0):
+        super(SongFile, self).__init__()
+        self.x, self.y = x, y
+        self.image = load_images(SongFile.songs[index])
+        w, h = self.image.get_size()
+        self.width, self.height = w, h
+        self.defineRect()
+
+    def defineRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+
+    def getRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        return x, y, w, h

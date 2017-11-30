@@ -16,7 +16,7 @@ from Settings import *
 from Song import Song
 
 # move this to generate song method with filename as argument
-filename = 'ode_to_joy.mid'
+filename = 'bach_minuet.mid'
 mid = MidiFile('music/' + filename)
 textOut = open('assets/' + filename.split('.')[0], 'w')
 
@@ -30,7 +30,7 @@ def parseMIDI(file):
     time = 0
     song = []
     for msg in file:
-        # print(msg)
+        print(msg)
         if isNote(msg):
             time += msg.time
             notes = msg.bytes()
@@ -158,28 +158,27 @@ def extractNoteType(PPQ, BPM, dt):
     return currType
 
 
-def generateSong(mid):
+def generateSong(filename):
+    mid = MidiFile('music/' + filename)
     print('Song Name:', mid.tracks[0].name)
     print("Ticks:", mid.ticks_per_beat)
     PPQ = mid.ticks_per_beat
     song = parseMIDI(mid)
     print('Time:', mid.length)
-    # print('Bytes:', song, len(song))
     timeSig = findTimeSignature(mid)
-    # print('Time Signature:', time_sig)
     BPM = findTempo(mid)
     print('Tempo:', BPM)
     pairs = getNotePairs(song)
-    print('Pairs:', pairs, len(pairs))
+    # print('Pairs:', pairs, len(pairs))
     compound = compoundNotePairs(song, pairs, PPQ, BPM)
-    print('Compound:', compound, len(compound))
+    # print('Compound:', compound, len(compound))
     output = extractNotes(compound)
-    print('Notes:', output, len(output))
+    # print('Notes:', output, len(output))
 
     result = Song(output, timeSig, BPM)
     return result
 
 
-song = generateSong(mid)
+song = generateSong(filename)
 
 textOut.close()

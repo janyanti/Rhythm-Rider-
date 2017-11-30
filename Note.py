@@ -64,7 +64,7 @@ def listToDict(list):
 class Notes():
     # music note object
     noteConvert = listToDict(digitToNotes())
-    Clefs = ['Bass', 'Treble']
+    clefs = ['Bass', 'Treble']
 
     def __init__(self, ID, vel=112, chan=144, dt=0, typ='quarter'):
         self.noteID = ID
@@ -78,6 +78,12 @@ class Notes():
     def __repr__(self):
         return str(self.note)
 
+    def __eq__(self, other):
+        return isinstance(other, Notes) and self.getHashables() == other.getHashables()
+
+    def getHashables(self):
+        return (self.noteID)
+
     def playNote(self):
         note = [self.channel, self.noteID, self.velocity]
         midiout.send_message(note)
@@ -88,8 +94,8 @@ class Notes():
     def getClef(self):
         # returns clef classification of note
         if self.noteID >= 60:
-            return Notes.Clefs[-1]
-        return Notes.Clefs[0]
+            return Notes.clefs[-1]
+        return Notes.clefs[0]
 
     def getPosition(self):
         return self.dt
@@ -144,9 +150,10 @@ class Notes():
     @staticmethod
     def toNote(list):
         # creates a note object from list
-        channel = list.pop(0)
-        noteID = list.pop(0)
-        velocity = list.pop(0)
-        dt = list.pop()
+        channel, noteID, velocity, dt = tuple(list)
+        # channel = list.pop(0)
+        # noteID = list.pop(0)
+        # velocity = list.pop(0)
+        # dt = list.pop()
         result = Notes(noteID, velocity, channel, dt)
         return result

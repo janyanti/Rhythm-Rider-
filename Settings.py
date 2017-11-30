@@ -14,6 +14,7 @@ TITLE = 'Rhythm Rider'
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255,255,255)
+GREEN = (0, 255, 0)
 
 # Game Constants
 STEP = 30
@@ -28,3 +29,9 @@ MODES = {'play': 'self.initGame()', 'select': 'self.initSelect',
 
 # music constants
 TICKS = 60000
+INTERCEPT = 1.4
+SLOPE = 0.0335
+
+# grpahics
+SFY = 590
+SFDX = 280

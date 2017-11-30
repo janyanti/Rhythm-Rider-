@@ -19,20 +19,22 @@ import threading
 
 q = queue.Queue()
 
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+
 
 class Game(object):
     def init(self):
         self.modes = MODES
         self.mode = 'start'
-        self.player = Player(MusicAnalyzer.song)
+        self.filename = ''
         self.timer = 0
-        self.NextNote = pygame.sprite.Group(GameObjects.NextNote())
         self.NoteFont = pygame.font.SysFont('alba', 100)
         self.GameFont = pygame.font.SysFont('alba', 35)
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
         self.inputText = ''
         self.gameMode = 'bass'
         self.hasCPU = True
+        self.isPaused = False
 
         # start screen
         self.initStart()
@@ -46,7 +48,7 @@ class Game(object):
         # self.helpscreen = pygame.sprite.Group(helpSprite)
 
     def mousePressed(self, x, y):
-        if self.mode == 'start':
+        if not self.mode == 'play':
             self.onClick(x, y)
 
     def mouseReleased(self, x, y):
@@ -78,6 +80,7 @@ class Game(object):
         selectSprite.image = pygame.image.load('assets/selectscreen.png')
         selectSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
         self.selectScreen = pygame.sprite.Group(selectSprite)
+        self.songFiles = pygame.sprite.Group(self.generateSongFiles())
 
     def selectMode(self, mode):
         command = self.modes[mode]
@@ -85,11 +88,12 @@ class Game(object):
         self.mode = mode
 
     def initGame(self):
+        self.player = Player(MusicAnalyzer.song)
         clefs = (GameObjects.TrebleClef(90, 186), GameObjects.BassClef(90, 504))
         self.Lines = pygame.sprite.Group(GameObjects.Lines.generateStaff())
         self.Clefs = pygame.sprite.Group(clefs)
         self.Notes = pygame.sprite.Group(self.player.musicNotes)
-        self.Hero = pygame.sprite.Group(GameObjects.Hero(WIDTH // 2, 135))
+        self.Hero = pygame.sprite.Group(GameObjects.Hero(y=135))
         if self.gameMode == 'treble':
             self.targetNotes = self.player.getTrebleNotes()
             self.CPUTargets = self.player.getBassNotes()
@@ -103,18 +107,15 @@ class Game(object):
             self.CPU = pygame.sprite.Group(GameObjects.Hero(y=cpuHeight))
             self.moveCPU()
         self.total = len(self.targetNotes)
-        self.splitNote(self.targetNotes[0])
-        # print(self.targetNotes)
+        self.splitNote(self.targetNotes.pop(0))
         self.numerator, self.denominator = self.player.song.getTimeSignature()
 
     def selectInput(self, char):
         self.inputText += char
 
     def splitNote(self, note):
-        name = note.getNoteName()
-        octave = note.getOctave()
-        self.currNote = name
-        self.currOctave = octave
+        self.currNote = note.getNoteName()
+        self.currOctave = note.getOctave()
 
     def keyPressed(self, keyCode, modifier):
         if self.mode == 'play':
@@ -125,6 +126,8 @@ class Game(object):
             if keyCode == pygame.K_DOWN:
                 hero.changeDirection(1)
                 hero.move(WIDTH, HEIGHT)
+            if keyCode == pygame.K_p:
+                self.isPaused = not self.isPaused
         if self.mode == 'select':
             if keyCode == pygame.K_BACKSPACE:
                 self.inputText = self.inputText[:-1]
@@ -147,13 +150,14 @@ class Game(object):
             spawn = self.getStartHero().spawnNote()
             self.spawnedNotes.add(spawn)
         self.spawnedNotes.update()
-        if self.mode == 'play':
-            self.Notes.update()
-            self.Hero.update()
-            if self.hasCPU:
-                self.CPU.update()
-            self.clefCollision()
-            self.noteCollision()
+        if not self.isPaused:
+            if self.mode == 'play':
+                self.Notes.update()
+                self.Hero.update()
+                if self.hasCPU:
+                    self.CPU.update()
+                self.clefCollision()
+                self.noteCollision()
         if self.mode == 'select':
             pass
 
@@ -165,7 +169,6 @@ class Game(object):
         elif self.mode == 'select':
             self.drawSelect(screen)
 
-
     def drawStart(self, screen):
         self.startScreen.draw(screen)
         self.spawnedNotes.draw(screen)
@@ -174,8 +177,18 @@ class Game(object):
 
     def drawSelect(self, screen):
         self.selectScreen.draw(screen)
+        self.songFiles.draw(screen)
         file = self.GameFont.render(self.inputText, True, BLACK, None)
         screen.blit(file, (STEP * 3, 285))
+
+    def generateSongFiles(self):
+        x = 200
+        songFiles = []
+        for i in range(len(GameObjects.SongFile.songs)):
+            song = GameObjects.SongFile(x, SFY, i)
+            songFiles.append(song)
+            x += SFDX
+        return songFiles
 
     def drawGame(self, screen):
         for line in self.Lines:
@@ -186,10 +199,9 @@ class Game(object):
         self.Hero.draw(screen)
         if self.hasCPU:
             self.CPU.draw(screen)
-        self.NextNote.draw(screen)
         self.drawNextText(screen)
         self.drawTimeSignature(screen)
-
+        self.drawTempo(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
@@ -219,23 +231,43 @@ class Game(object):
             if test.collidepoint(x, y):
                 mode = button.name
                 self.selectMode(mode)
+        for songFile in self.songFiles:
+            test = songFile.rect
+            print('hi')
+            if test.collidepoint(x, y):
+                self.drawSurface(songFile)
+
+    def drawSurface(self, songFile):
+        x, y, w, h = songFile.getRect()
+        position = x, y
+        size = w, h
+        rect = pygame.Rect(position, size)
+        image = pygame.Surface(size)
+        pygame.draw.rect(image, GREEN, rect)
 
     def drawNextText(self, screen):
-        note = self.NoteFont.render(str(self.currNote), True, BLACK, None)
-        screen.blit(note, (WIDTH // 2, HEIGHT // 2 - 45))
-        octave = self.GameFont.render(str(self.currOctave), True, BLACK, None)
+        note = self.NoteFont.render(str(self.currNote), True, BLACK)
+        screen.blit(note, (WIDTH // 2, HEIGHT // 2 - STEP * 3))
+        octave = self.GameFont.render(str(self.currOctave), True, BLACK)
         screen.blit(octave, (WIDTH // 2 + STEP * 4, HEIGHT // 2 + STEP))
         acc = "Accuracy: %.2f" % (self.player.accuracy) + '%'
-        accuracy = self.GameFont.render(acc, True, BLACK, None)
+        accuracy = self.GameFont.render(acc, True, BLACK)
         screen.blit(accuracy, (WIDTH - 10 * STEP, NOTESTEP * 2))
 
     def drawTimeSignature(self, screen):
-        numer = self.timeFont.render(str(self.numerator), True, BLACK, None)
-        denom = self.timeFont.render(str(self.denominator), True, BLACK, None)
+        numer = self.timeFont.render(str(self.numerator), True, BLACK)
+        denom = self.timeFont.render(str(self.denominator), True, BLACK)
         screen.blit(numer, (STEP * 6, -NOTESTEP * 5))
         screen.blit(denom, (STEP * 6, -NOTESTEP))
         screen.blit(numer, (STEP * 6, NOTESTEP * 17))
         screen.blit(denom, (STEP * 6, NOTESTEP * 21))
+
+    def drawTempo(self, screen):
+        tempo = self.player.song.getTempo()
+        text = 'Tempo = %d BPM' % tempo
+        result = self.GameFont.render(text, True, BLACK)
+        screen.blit(result, (6 * STEP, NOTESTEP * 2))
+
 
     def worker(self):
         print('working')
@@ -244,19 +276,27 @@ class Game(object):
         time.sleep(1)
 
     def clefCollision(self):
-        for clef in self.Clefs:
-            if pygame.sprite.spritecollide(clef, self.Notes, True):
+        # checks for specific note
+        for musicNote in self.Notes:
+            if pygame.sprite.spritecollide(musicNote, self.Clefs, False):
+                note = musicNote.Note
+                musicNote.kill()
+                print(note)
                 self.player.missedNotes += 1
-                self.targetNotes.pop(0)
+                print(self.player.notesList)
+                self.player.notesList.remove(note)
+                break
                 # self.splitNote(self.player.notesList[0])
 
     def noteCollision(self):
-        for note in self.Notes:
-            if pygame.sprite.spritecollide(note, self.Hero, False):
-                note.Note.playNote()
-                note.kill()
-                self.player.hitNote(note)
-                self.splitNote(self.targetNotes[0])
+        for musicNote in self.Notes:
+            if pygame.sprite.collide_circle(musicNote, self.getHero()):
+                note = musicNote.Note
+                musicNote.Note.playNote()
+                musicNote.kill()
+                self.player.hitNote(musicNote)
+                self.player.notesList.remove(note)
+                self.splitNote(self.targetNotes.pop(0))
                 self.player.accuracy = ((self.player.score / self.total * 100))
         if self.hasCPU:
             self.cpuCollision()
