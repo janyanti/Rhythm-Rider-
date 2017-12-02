@@ -16,7 +16,7 @@ from Settings import *
 from Song import Song
 
 # move this to generate song method with filename as argument
-# filename = 'fur_elise.mid'
+filename = "C:\\Users\\cjany\Downloads\VivaLaVida.mid"
 # mid = MidiFile(filename)
 # textOut = open('assets/' + filename.split('.')[0], 'w')
 
@@ -30,7 +30,7 @@ def parseMIDI(file):
     time = 0
     song = []
     for msg in file:
-        # print(msg)
+        print(msg)
         if isNote(msg):
             time += msg.time
             notes = msg.bytes()
@@ -75,7 +75,9 @@ def isTempo(msg):
 def isNote(msg):
     # check if meta message denotes note played
     msgType = msg.type
-    return 'note_on' == msgType or 'note_off' == msgType
+    note = 'note_on' == msgType or 'note_off' == msgType
+    return note
+
 
 
 def isNoteOff(msg):

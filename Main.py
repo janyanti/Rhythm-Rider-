@@ -7,20 +7,21 @@
 # Imports
 ##############################################
 import os
-import string
+import pygame.midi
 import MusicAnalyzer
 import time
 import GameObjects
 from Player import Player
 from Settings import *
+from Note import Notes
 import pygame
-import queue
+from pygame.locals import *
+from collections import deque
 import tkinter
 from tkinter import filedialog
 
 import threading
 
-q = queue.Queue()
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
@@ -29,8 +30,10 @@ class Game(object):
     def init(self):
         self.modes = MODES
         self.mode = 'start'
-        self.filename = 'fur_elise.mid'
+        self.pianoOn = False
+        self.filename = 'music/fur_elise.mid'
         self.timer = 0
+        self.noteQ = deque()
         self.NoteFont = pygame.font.SysFont('alba', 100)
         self.GameFont = pygame.font.SysFont('alba', 35)
         self.FileFont = pygame.font.SysFont('agency fb', 45)
@@ -74,20 +77,31 @@ class Game(object):
         self.startScreen = pygame.sprite.Group(startSprite)
         self.startHero = pygame.sprite.Group(GameObjects.startHero())
         self.spawnedNotes = pygame.sprite.Group()
-        playButton = GameObjects.Button(640, 540, 'select')
-        helpButton = GameObjects.Button(640, 650, 'help')
-        self.startButtons = pygame.sprite.Group(playButton, helpButton)
+        play = GameObjects.Button(640, 540, 'select')
+        help = GameObjects.Button(640, 650, 'help')
+        options = GameObjects.Button(1100, 665, 'options')
+        print(options.rect, help.rect)
+        self.startButtons = pygame.sprite.Group(play, help, options)
 
     def initSelect(self):
         # define screen/attributes for this mode
         selectSprite = pygame.sprite.Sprite()
-        selectSprite.image = pygame.image.load('assets/selectscreen.png')
+        selectSprite.image = GameObjects.load_images('selectscreen')
         selectSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
         self.selectScreen = pygame.sprite.Group(selectSprite)
         self.songFiles = pygame.sprite.Group(self.generateSongFiles())
 
+    def initOptions(self):
+        optionsSprite = pygame.sprite.Sprite()
+        optionsSprite.image = GameObjects.load_images('optionsscreen')
+        optionsSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
+        self.optionsScreen = pygame.sprite.Group(optionsSprite)
+        self.InputModes = pygame.sprite.Group(self.generateInputModes())
+        self.NotesModes = pygame.sprite.Group(self.generateNotesModes())
+
     def selectMode(self, mode):
         command = self.modes[mode]
+        print(command)
         eval(command)
         self.mode = mode
 
@@ -132,6 +146,9 @@ class Game(object):
                 self.isPaused = not self.isPaused
         if self.mode == 'select':
             self.keySelect(keyCode)
+        if self.mode == 'options':
+            if keyCode == pygame.K_RETURN:
+                self.mode = 'start'
 
     def keySelect(self, keyCode):
         root = tkinter.Tk()
@@ -149,11 +166,27 @@ class Game(object):
     def keyReleased(self, keyCode, modifier):
         pass
 
+    def keyToNote(self, data):
+        # takes in keyboard input
+        data = data[0][0][:-1]
+        if data[-1] == 0:
+            data.append(0)
+            note = Notes.toNote(data)
+            self.noteQ.append(note)
+
+    def inputNote(self):
+        try:
+            result = self.noteQ.popleft()
+            print(result)
+        except:
+            return
+
     def timerFired(self, dt):
         self.timer += 1
+        self.inputNote()
         if self.mode == 'start':
             self.startHero.update()
-        if self.timer % 5 == 0:
+        if self.timer % 10 == 0:
             spawn = self.getStartHero().spawnNote()
             self.spawnedNotes.add(spawn)
         self.spawnedNotes.update()
@@ -175,6 +208,8 @@ class Game(object):
             self.drawGame(screen)
         elif self.mode == 'select':
             self.drawSelect(screen)
+        elif self.mode == 'options':
+            self.drawOptions(screen)
 
     def drawStart(self, screen):
         self.startScreen.draw(screen)
@@ -188,6 +223,11 @@ class Game(object):
         file = self.FileFont.render(self.inputText, True, BLACK, None)
         screen.blit(file, (STEP * 3, 285))
 
+    def drawOptions(self, screen):
+        self.optionsScreen.draw(screen)
+        self.InputModes.draw(screen)
+        self.NotesModes.draw(screen)
+
     def generateSongFiles(self):
         x = 200
         songFiles = []
@@ -196,6 +236,24 @@ class Game(object):
             songFiles.append(song)
             x += SFDX
         return songFiles
+
+    def generateInputModes(self):
+        y = 210
+        modesList = []
+        for i in range(len(GameObjects.InputModes.modes)):
+            mode = GameObjects.InputModes(IMX, y, i)
+            modesList.append(mode)
+            y += IMDY
+        return modesList
+
+    def generateNotesModes(self):
+        y = 250
+        notesList = []
+        for i in range(len(GameObjects.NotesModes.modes)):
+            mode = GameObjects.NotesModes(315, y, i)
+            notesList.append(mode)
+            y += 300
+        return notesList
 
     def drawGame(self, screen):
         for line in self.Lines:
@@ -234,17 +292,44 @@ class Game(object):
 
     def onClick(self, x, y):
         if self.mode == 'select':
-            for songFile in self.songFiles:
-                test = songFile.rect
-                if test.collidepoint(x, y):
-                    songFile.click()
-                    self.filename = songFile.id
+            self.clickSelect(x, y)
         if self.mode == 'start':
-            for button in self.startButtons:
-                test = button.rect
-                if test.collidepoint(x, y):
-                    mode = button.name
-                    self.selectMode(mode)
+            self.clickStart(x, y)
+        if self.mode == 'options':
+            self.clickModes(x, y)
+
+    def clickModes(self, x, y):
+        for mode in self.InputModes:
+            key = mode.name
+            if self.pointCollision(mode, x, y):
+                mode.click()
+                exec(INPUTS[key])
+        for clef in self.NotesModes:
+            key = clef.name
+            if self.pointCollision(clef, x, y):
+                clef.click()
+                exec(NOTESMODE[key])
+
+    def clickSelect(self, x, y):
+        for songFile in self.songFiles:
+            if self.pointCollision(songFile, x, y):
+                songFile.click()
+                self.filename = songFile.id
+
+    def clickStart(self, x, y):
+        for button in self.startButtons:
+            if self.pointCollision(button, x, y):
+                mode = button.name
+                self.selectMode(mode)
+
+    def pointCollision(self, obj, x, y):
+        x1, y1, w, h = obj.x, obj.y, obj.width, obj.height
+        xPos = set(range(x1 - w, x1 + w))
+        yPos = set(range(y1 - h, y1 + h))
+        if x in xPos and y in yPos:
+            return True
+        return False
+
 
     def checkFilePath(self, path):
         return not os.path.isdir(path) and os.path.isfile(path)
@@ -281,21 +366,13 @@ class Game(object):
         screen.blit(result, (6 * STEP, NOTESTEP * 2))
 
 
-    def worker(self):
-        print('working')
-        self.count += 1
-        q.put(self.count)
-        time.sleep(1)
-
     def clefCollision(self):
         # checks for specific note
         for musicNote in self.Notes:
             if pygame.sprite.spritecollide(musicNote, self.Clefs, False):
                 note = musicNote.Note
                 musicNote.kill()
-                print(note)
                 self.player.missedNotes += 1
-                print(self.player.notesList)
                 self.player.notesList.remove(note)
                 break
                 # self.splitNote(self.player.notesList[0])
@@ -342,11 +419,14 @@ class Game(object):
         self.title = t
         self.bgColor = WHITE
         pygame.init()
+        pygame.midi.init()
 
     def run(self):
 
         clock = pygame.time.Clock()
-        screen = pygame.display.set_mode((self.width, self.height))
+        flags = DOUBLEBUF
+        screen = pygame.display.set_mode((self.width, self.height), flags)
+        screen.set_alpha(None)
         # set the title of the window
         pygame.display.set_caption(self.title)
 
@@ -356,10 +436,15 @@ class Game(object):
         # call game-specific initialization
         self.init()
         self.screen = screen
+        # self.inp = pygame.midi.Input(1)
         playing = True
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time)
+            # if self.inp.poll() and self.pianoOn:
+            #     # no way to find number of messages in queue
+            #     data = self.inp.read(1000)
+            #     self.keyToNote(data)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.mousePressed(*(event.pos))

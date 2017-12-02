@@ -348,7 +348,7 @@ class NextNote(pg.sprite.Sprite):
 
 
 class Button(pg.sprite.Sprite):
-    actions = {'play': 'play', 'help': 'help'}
+    actions = {'play': 'play', 'help': 'help', 'options': 'options'}
 
     def __init__(self, x, y, image):
         super(Button, self).__init__()
@@ -411,6 +411,100 @@ class SongFile(pg.sprite.Sprite):
     def recolor(self):
         imageName = self.name
         status = SongFile.status[imageName]
+        if status:
+            imageName += '_on'
+        self.image = load_images(imageName)
+        self.update()
+
+
+class InputModes(pg.sprite.Sprite):
+    modes = ['cpumode', 'singlemode', 'pianomode']
+    status = dict()
+    modesList = []
+
+    def __init__(self, x, y, index=0):
+        super(InputModes, self).__init__()
+        self.x, self.y = x, y
+        self.name = InputModes.modes[index]
+        self.image = load_images(self.name)
+        w, h = self.image.get_size()
+        self.width, self.height = w, h
+        self.defineRect()
+        InputModes.status[self.name] = False
+        InputModes.modesList.append(self)
+
+    def defineRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
+
+    def getRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        return x, y, w, h
+
+    def click(self):
+        status = InputModes.status
+        if status[self.name]:
+            InputModes.status[self.name] = False
+            self.recolor()
+            return
+        for key in status:
+            status[key] = False
+        InputModes.status[self.name] = True
+        for file in InputModes.modesList:
+            file.recolor()
+
+    def recolor(self):
+        imageName = self.name
+        status = InputModes.status[imageName]
+        if status:
+            imageName += '_on'
+        self.image = load_images(imageName)
+        self.update()
+
+
+class NotesModes(pg.sprite.Sprite):
+    modes = ['trebleplay', 'bassplay']
+    status = dict()
+    modesList = []
+
+    def __init__(self, x, y, index=0):
+        super(NotesModes, self).__init__()
+        self.x, self.y = x, y
+        self.name = NotesModes.modes[index]
+        self.image = load_images(self.name)
+        w, h = self.image.get_size()
+        self.width, self.height = w, h
+        self.defineRect()
+        NotesModes.status[self.name] = False
+        NotesModes.modesList.append(self)
+
+    def defineRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
+
+    def getRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        return x, y, w, h
+
+    def click(self):
+        status = NotesModes.status
+        if status[self.name]:
+            NotesModes.status[self.name] = False
+            self.recolor()
+            return
+        for key in status:
+            status[key] = False
+        NotesModes.status[self.name] = True
+        for file in NotesModes.modesList:
+            file.recolor()
+
+    def recolor(self):
+        imageName = self.name
+        status = NotesModes.status[imageName]
         if status:
             imageName += '_on'
         self.image = load_images(imageName)
