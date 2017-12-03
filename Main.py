@@ -492,14 +492,14 @@ class Game(object):
         # call game-specific initialization
         self.init()
         self.screen = screen
-        self.inp = pygame.midi.Input(1)
+        # self.inp = pygame.midi.Input(1)
         playing = True
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time)
-            if self.inp.poll() and self.pianoOn:
-                data = self.inp.read(1000)
-                self.keyToNote(data)
+            # if self.inp.poll() and self.pianoOn:
+            #     data = self.inp.read(1000)
+            #     self.keyToNote(data)
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
