@@ -342,7 +342,7 @@ class NextNote(pg.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
         self.image = pg.Surface((w, h))
         self.image.fill(WHITE)
 
@@ -362,7 +362,7 @@ class Button(pg.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x + w / 2, y + h / 2)
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
 
     def click(self, actionCode):
         action = Button.actions[actionCode]
@@ -389,7 +389,7 @@ class SongFile(pg.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
 
     def getRect(self):
         w, h = self.width, self.height
@@ -436,7 +436,7 @@ class InputModes(pg.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
 
     def getRect(self):
         w, h = self.width, self.height
@@ -483,7 +483,7 @@ class NotesModes(pg.sprite.Sprite):
     def defineRect(self):
         w, h = self.width, self.height
         x, y = self.x, self.y
-        self.rect = pg.Rect(x - w / 2, y - h / 2, x, y + h / 2)
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
 
     def getRect(self):
         w, h = self.width, self.height
@@ -508,4 +508,38 @@ class NotesModes(pg.sprite.Sprite):
         if status:
             imageName += '_on'
         self.image = load_images(imageName)
+        self.update()
+
+
+class NotePortal(pg.sprite.Sprite):
+    states = ['noteportal', 'noteportal_hit', 'noteportal_miss']
+
+    def __init__(self, y, x=422, state=0):
+        super(NotePortal, self).__init__()
+        self.x, self.y = x, y
+        self.name = NotePortal.states[state]
+        self.image = load_images(self.name)
+        w, h = self.image.get_size()
+        self.width, self.height = w, h
+        self.defineRect()
+        self.images = self.getImageStates()
+
+    def defineRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        self.rect = pg.Rect((x - w / 2, y - h / 2), (w, h))
+
+    def getRect(self):
+        w, h = self.width, self.height
+        x, y = self.x, self.y
+        return x, y, w, h
+
+    @staticmethod
+    def getImageStates():
+        stateImages = [load_images(state) for state in NotePortal.states]
+        return stateImages
+
+    def hit(self, n):
+        state = self.images[n]
+        self.image = state
         self.update()

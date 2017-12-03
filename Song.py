@@ -27,7 +27,7 @@ class Song():
         self.startWidth = WIDTH + WIDTH // 2
         self.groups = self.groupNotes()
         self.musicNotes = self.generateNotes()
-        self.trebleNotes, self.bassNotes = self.getClef()
+        self.trebleNotes, self.bassNotes = self.getClefs()
 
     def generateNotes(self):
         result = []
@@ -54,6 +54,15 @@ class Song():
         treble, bass = [], []
         for note in self.notesList:
             if note.getClef() == 'Treble':
+                treble.append(note)
+            else:
+                bass.append(note)
+        return treble, bass
+
+    def getClefs(self):
+        treble, bass = [], []
+        for note in self.musicNotes:
+            if note.Note.getClef() == 'Treble':
                 treble.append(note)
             else:
                 bass.append(note)
