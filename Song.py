@@ -19,29 +19,28 @@ class Song():
     noteDistance = {'16th': NOTESTEP * 3, 'eighth': STEP * 3, 'quarter': STEP * 6,
                     'half': STEP * 9, 'whole': STEP * 12}
 
-    def __init__(self, notes, sig, tempo=120):
+    def __init__(self, notes, sig, PPQ, tempo=120):
         self.notesList = notes
         self.timeSignature = sig
         self.tempo = tempo
+        self.PPQ = PPQ
         self.noteVelocity = self.getVelocity()
         self.startWidth = WIDTH + WIDTH // 2
         self.groups = self.groupNotes()
+        self.notePositions = self.positionNotes()
+        print(self.notePositions)
         self.musicNotes = self.generateNotes()
         self.trebleNotes, self.bassNotes = self.getClefs()
 
     def generateNotes(self):
         result = []
         dx = self.noteVelocity
-        step = STEP * 3
         currWidth = self.startWidth
-        for key in self.groups:
-            steps = []
+        for (i, key) in enumerate(self.groups):
             for note in self.groups[key]:
-                key = note.getType()
-                steps.append(Song.noteDistance[key])
                 musicNote = MusicNote(currWidth, note, dx)
                 result.append(musicNote)
-            currWidth += min(steps)
+            currWidth += (STEP * 6) * self.notePositions[i]
         return result
 
     def getTimeSignature(self):
@@ -80,7 +79,21 @@ class Song():
                 result[pos] = [elem]
             else:
                 result[pos].append(elem)
+        self.positionkeys = result.keys()
         print(result)
+        return result
+
+    def positionNotes(self):
+        result = []
+        data = sorted(self.positionkeys)
+        ticks = (TICKS / (self.PPQ * self.tempo)) * (10 ** (-3))
+        for i in range(len(data) - 1):
+            x1 = data[i]
+            x2 = data[i + 1]
+            dist = x2 - x1
+            deviation = round((dist / ticks) / self.PPQ, 2)
+            result.append(deviation)
+        result.append(0)
         return result
 
     def getVelocity(self):

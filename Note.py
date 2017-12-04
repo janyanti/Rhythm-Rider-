@@ -157,3 +157,8 @@ class Notes():
         # dt = list.pop()
         result = Notes(noteID, velocity, channel, dt)
         return result
+
+
+l = [144, 60, 112, 0]
+c = Notes.toNote(l)
+print(c.getHeight())

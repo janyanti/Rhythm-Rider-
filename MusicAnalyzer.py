@@ -30,7 +30,7 @@ def parseMIDI(file):
     time = 0
     song = []
     for msg in file:
-        print(msg)
+        print(msg.bytes())
         if isNote(msg):
             time += msg.time
             notes = msg.bytes()
@@ -177,7 +177,7 @@ def generateSong(filename):
     output = extractNotes(compound)
     # print('Notes:', output, len(output))
 
-    result = Song(output, timeSig, BPM)
+    result = Song(output, timeSig, PPQ, BPM)
     return result
 
 # song = generateSong(filename)

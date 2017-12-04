@@ -87,6 +87,7 @@ class Game(object):
         selectSprite.rect = pygame.Rect(0, 0, WIDTH, HEIGHT)
         self.selectScreen = pygame.sprite.Group(selectSprite)
         self.songFiles = pygame.sprite.Group(self.generateSongFiles())
+        self.currNote, self.currOctave = 'C', '3'
 
     def initOptions(self):
         # define graphics/functions for options menu
@@ -380,7 +381,6 @@ class Game(object):
         screen.blit(result, (3 * STEP, NOTESTEP))
 
     def clefCollision(self):
-        # checks for specific note
         for musicNote in self.Bass:
             if pygame.sprite.spritecollide(musicNote, self.Clefs, False):
                 note = musicNote.Note
@@ -492,14 +492,14 @@ class Game(object):
         # call game-specific initialization
         self.init()
         self.screen = screen
-        # self.inp = pygame.midi.Input(1)
+        self.inp = pygame.midi.Input(1)
         playing = True
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time)
-            # if self.inp.poll() and self.pianoOn:
-            #     data = self.inp.read(1000)
-            #     self.keyToNote(data)
+            if self.inp.poll() and self.pianoOn:
+                data = self.inp.read(1000)
+                self.keyToNote(data)
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
