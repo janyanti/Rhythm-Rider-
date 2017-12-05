@@ -158,7 +158,6 @@ class Notes():
         result = Notes(noteID, velocity, channel, dt)
         return result
 
-
-l = [144, 60, 112, 0]
-c = Notes.toNote(l)
-print(c.getHeight())
+# l = [144, 60, 112, 0]
+# c = Notes.toNote(l)
+# print(c.getHeight())

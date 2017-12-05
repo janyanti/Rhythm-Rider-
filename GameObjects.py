@@ -13,7 +13,6 @@ import Note
 from Settings import *
 import random
 
-
 ##############################################
 # Class Functions
 ##############################################
@@ -74,6 +73,8 @@ class GameObject(pg.sprite.Sprite):
 class Hero(GameObject):
     img = load_images('hero')
     direction = 1
+    spawnable = ['spawn1', 'spawn2', 'spawn3',
+                 'spawn4', 'spawn5']
 
     def __init__(self, x=WIDTH // 3, y=STEP * 5):
         super().__init__(x, y, Hero.img, 20)
@@ -121,6 +122,15 @@ class Hero(GameObject):
     def updateFrame(self, frame):
         self.image = frame
         self.baseImage = frame
+
+    def spawnNote(self):
+        x, y = self.x, self.y + 25
+        max = len(startHero.spawnable) - 1
+        index = random.randint(0, max)
+        spawnImage = startHero.spawnable[index]
+        image = load_images(spawnImage)
+        spawned = spawnedNote(x, y, image)
+        return spawned
 
 
 class startHero(Hero):
@@ -348,7 +358,9 @@ class NextNote(pg.sprite.Sprite):
 
 
 class Button(pg.sprite.Sprite):
-    actions = {'play': 'play', 'help': 'help', 'options': 'options'}
+    actions = {'play': 'play', 'help': 'help', 'options': 'options',
+               'next': 'next', 'back': 'back', 'retry': 'play',
+               'newsong': 'select', 'mainmenu': 'start'}
 
     def __init__(self, x, y, image):
         super(Button, self).__init__()

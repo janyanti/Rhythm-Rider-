@@ -29,10 +29,11 @@ def parseMIDI(file):
     # read midi file and filter notes
     time = 0
     song = []
+    print(file.tracks)
     for msg in file:
-        print(msg.bytes())
+        time += msg.time
+        print(msg)
         if isNote(msg):
-            time += msg.time
             notes = msg.bytes()
             # textOut.write(str(notes) + str(round(time, 2)) + '\n')
             song.append([notes, formatTime(time)])
@@ -48,6 +49,23 @@ def findTimeSignature(file):
             num, den = currTime.numerator, currTime.denominator
             time.append(([num, den], i))
     return time
+
+
+# def selectTrack(tracks):
+#     result = []
+#     for track in tracks:
+#         if 'piano' in str(track).lower():
+#             result.append(track)
+#     bestTrack = None
+#     longestTrack = 0
+#     for track in tracks:
+#         curLen = len(track)
+#         if curLen > longestTrack:
+#             bestTrack = track
+#             longestTrack = curLen
+#     if not len(result) == 0:
+#         return [item for sublist in result for item in sublist]
+#     else: return bestTrack
 
 
 def findTempo(file):
@@ -162,6 +180,7 @@ def extractNoteType(PPQ, BPM, dt):
 
 def generateSong(filename):
     mid = MidiFile(filename)
+    print(mid.type)
     print('Song Name:', mid.tracks[0].name)
     print("Ticks:", mid.ticks_per_beat)
     PPQ = mid.ticks_per_beat

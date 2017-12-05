@@ -9,7 +9,7 @@
 
 from GameObjects import MusicNote
 from Settings import *
-
+from collections import Counter
 
 ##############################################
 # Class
@@ -34,13 +34,17 @@ class Song():
 
     def generateNotes(self):
         result = []
+        mostCommon = self.mostCommon(self.notePositions)
         dx = self.noteVelocity
         currWidth = self.startWidth
         for (i, key) in enumerate(self.groups):
             for note in self.groups[key]:
                 musicNote = MusicNote(currWidth, note, dx)
                 result.append(musicNote)
-            currWidth += (STEP * 6) * self.notePositions[i]
+            if not self.notePositions[i] < 0.1:
+                currWidth += (STEP * 6) * self.notePositions[i]
+            else:
+                currWidth += (STEP * 6) * mostCommon
         return result
 
     def getTimeSignature(self):
@@ -100,3 +104,7 @@ class Song():
         tempo = self.getTempo()
         dx = INTERCEPT + SLOPE * tempo
         return dx
+
+    def mostCommon(self, lst):
+        data = Counter(lst)
+        return max(lst, key=data.get)

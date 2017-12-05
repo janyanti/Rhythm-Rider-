@@ -24,7 +24,7 @@ NOTESTEP = STEP//2
 
 # game modes
 MODES = {'play': 'self.initGame()', 'select': 'self.initSelect',
-         'help': 'self.initHelp', 'start': 'self.initStart',
+         'help': 'self.initHelp()', 'start': 'self.initStart',
          'options': 'self.initOptions()'}
 
 CPU = '''self.hasCPU = True \nself.pianoOn = False'''
@@ -36,6 +36,8 @@ BASS = 'self.gameMode = "bass"'
 
 INPUTS = {'cpumode': CPU, 'singlemode': SINGLE, 'pianomode': PIANO}
 NOTESMODE = {'trebleplay': TREBLE, 'bassplay': BASS}
+
+GAMEOVER = {'retry': 'game', 'newsong': 'select', 'mainmenu': 'start'}
 
 
 # music constants
