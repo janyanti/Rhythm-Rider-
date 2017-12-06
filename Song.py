@@ -19,7 +19,8 @@ class Song():
     noteDistance = {'16th': NOTESTEP * 3, 'eighth': STEP * 3, 'quarter': STEP * 6,
                     'half': STEP * 9, 'whole': STEP * 12}
 
-    def __init__(self, notes, sig, PPQ, tempo=120):
+    def __init__(self, name, notes, sig, PPQ, tempo=120):
+        self.name = name
         self.notesList = notes
         self.timeSignature = sig
         self.tempo = tempo

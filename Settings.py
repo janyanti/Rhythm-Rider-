@@ -23,18 +23,19 @@ NOTESTEP = STEP//2
 # key inputs
 
 # game modes
-MODES = {'play': 'self.initGame()', 'select': 'self.initSelect',
+MODES = {'play': 'self.initGame()\nself.gameOver = False', 'select': 'self.initSelect',
          'help': 'self.initHelp()', 'start': 'self.initStart',
          'options': 'self.initOptions()'}
 
-CPU = '''self.hasCPU = True \nself.pianoOn = False'''
-SINGLE = '''self.hasCPU = False \nself.pianoOn = False'''
-PIANO = '''self.hasCPU = False \nself.pianoOn = True'''
+CPU = '''self.hasCPU = True \nself.pianoOn = False\nself.hasDual = False'''
+SINGLE = '''self.hasCPU = False \nself.pianoOn = False\nself.hasDual = False'''
+PIANO = '''self.hasCPU = False \nself.pianoOn = True\nself.hasDual = False'''
+DUAL = '''self.hasCPU = True \nself.pianoOn = False\nself.hasDual = True'''
 
 TREBLE = 'self.gameMode = "treble"'
 BASS = 'self.gameMode = "bass"'
 
-INPUTS = {'cpumode': CPU, 'singlemode': SINGLE, 'pianomode': PIANO}
+INPUTS = {'cpumode': CPU, 'dualmode': DUAL, 'singlemode': SINGLE, 'pianomode': PIANO}
 NOTESMODE = {'trebleplay': TREBLE, 'bassplay': BASS}
 
 GAMEOVER = {'retry': 'game', 'newsong': 'select', 'mainmenu': 'start'}
@@ -49,4 +50,4 @@ SLOPE = 0.0335
 SFY = 590  # Song File Y-pos
 SFDX = 280  # change in x
 IMX = 970  # Input mode X-pos
-IMDY = 200  # cgange in y
+IMDY = 156  # cgange in y

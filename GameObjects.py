@@ -39,7 +39,7 @@ class GameObject(pg.sprite.Sprite):
     def __init__(self, x, y, image, radius):
         super(GameObject, self).__init__()
         # x, y define the center of the object
-        self.x, self.y, self.image, self.radius = x, y, image, radius
+        self.x, self.y, self.image, self.radius = x, y, image.convert_alpha(), radius
         self.baseImage = image.copy()  # non-rotated version of image
         w, h = image.get_size()
         self.updateRect()
@@ -71,17 +71,17 @@ class GameObject(pg.sprite.Sprite):
 
 
 class Hero(GameObject):
-    img = load_images('hero')
+    img = load_images('hero_down')
     direction = 1
     spawnable = ['spawn1', 'spawn2', 'spawn3',
                  'spawn4', 'spawn5']
 
     def __init__(self, x=WIDTH // 3, y=STEP * 5):
         super().__init__(x, y, Hero.img, 20)
-        self.dy = Lines.margin // 2
+        self.dy = Lines.margin
         self.dx = 0
         self.loadFrames()
-        self.image = self.frames[0].convert()
+        self.image = self.frames[0].convert_alpha()
         self.currentFrame = 0
         self.prev_time = 0
         self.velocity = (0, 0)
@@ -174,6 +174,7 @@ class MusicNote(GameObject):
         image = load_images(MusicNote.noteheads[self.noteHeadIndex])
         super(MusicNote, self).__init__ \
             (x, y, image, rad)
+        self.image.convert_alpha()
         self.dx = dx
         self.velocity = (-self.dx, 0)
         self.y = self.Note.getHeight()
@@ -430,7 +431,7 @@ class SongFile(pg.sprite.Sprite):
 
 
 class InputModes(pg.sprite.Sprite):
-    modes = ['cpumode', 'singlemode', 'pianomode']
+    modes = ['cpumode', 'dualmode', 'singlemode', 'pianomode']
     status = dict()
     modesList = []
 

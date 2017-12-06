@@ -29,10 +29,10 @@ def parseMIDI(file):
     # read midi file and filter notes
     time = 0
     song = []
-    print(file.tracks)
+    # print(file.tracks)
     for msg in file:
         time += msg.time
-        print(msg)
+        # print(msg)
         if isNote(msg):
             notes = msg.bytes()
             # textOut.write(str(notes) + str(round(time, 2)) + '\n')
@@ -181,7 +181,8 @@ def extractNoteType(PPQ, BPM, dt):
 def generateSong(filename):
     mid = MidiFile(filename)
     print(mid.type)
-    print('Song Name:', mid.tracks[0].name)
+    name = mid.tracks[0].name
+    print('Song Name:', name)
     print("Ticks:", mid.ticks_per_beat)
     PPQ = mid.ticks_per_beat
     song = parseMIDI(mid)
@@ -196,7 +197,7 @@ def generateSong(filename):
     output = extractNotes(compound)
     # print('Notes:', output, len(output))
 
-    result = Song(output, timeSig, PPQ, BPM)
+    result = Song(name, output, timeSig, PPQ, BPM)
     return result
 
 # song = generateSong(filename)

@@ -17,7 +17,6 @@ class Player():
         self.accuracy = 0
         self.song = song
         self.releasedNotes = 0
-        self.missedNotes = 0
         self.notesList = song.notesList
         self.musicNotes = song.musicNotes
 
@@ -33,7 +32,6 @@ class Player():
             x = note.x
             if x < threshold:
                 self.releasedNotes += 1
-        pass
 
     def getTrebleNotes(self):
         return self.song.trebleNotes
