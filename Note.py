@@ -81,6 +81,9 @@ class Notes():
     def __eq__(self, other):
         return isinstance(other, Notes) and self.getHashables() == other.getHashables()
 
+    def __hash__(self):
+        return hash(self.getHashables())
+
     def getHashables(self):
         return (self.noteID)
 

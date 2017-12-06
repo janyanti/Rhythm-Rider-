@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f7c4a23-bf2b-4d7d-9ed0-8e2688628d0a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assets/hero.png" afterPath="" />
+    <list default="true" id="7f7c4a23-bf2b-4d7d-9ed0-8e2688628d0a" name="Default" comment="Optimized For Speed">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GameSounds.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/notehead.png" afterPath="$PROJECT_DIR$/assets/notehead.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GameObjects.py" afterPath="$PROJECT_DIR$/GameObjects.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MusicAnalyzer.py" afterPath="$PROJECT_DIR$/MusicAnalyzer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Player.py" afterPath="$PROJECT_DIR$/Player.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Note.py" afterPath="$PROJECT_DIR$/Note.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Settings.py" afterPath="$PROJECT_DIR$/Settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Song.py" afterPath="$PROJECT_DIR$/Song.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,21 +23,21 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11373">
-              <caret line="669" column="51" lean-forward="false" selection-start-line="669" selection-start-column="51" selection-end-line="669" selection-end-column="51" />
+            <state relative-caret-position="146">
+              <caret line="528" column="33" lean-forward="false" selection-start-line="528" selection-start-column="33" selection-end-line="528" selection-end-column="33" />
               <folding>
                 <element signature="e#254#263#0" expanded="true" />
-                <marker date="1512533424575" expanded="true" signature="24752:24777" ph="..." />
+                <marker date="1512545434890" expanded="true" signature="24690:24715" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameSounds.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameSounds.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GameSounds.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="136">
+              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="e#263#285#0" expanded="true" />
               </folding>
@@ -58,8 +58,8 @@
       <file leaf-file-name="Song.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Song.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+            <state relative-caret-position="115">
+              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="e#265#298#0" expanded="true" />
               </folding>
@@ -82,20 +82,33 @@
       <file leaf-file-name="Settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="37" column="35" lean-forward="false" selection-start-line="37" selection-start-column="35" selection-end-line="37" selection-end-column="35" />
+            <state relative-caret-position="141">
+              <caret line="21" column="24" lean-forward="true" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameObjects.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameObjects.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameObjects.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5855">
-              <caret line="166" column="30" lean-forward="true" selection-start-line="166" selection-start-column="30" selection-end-line="166" selection-end-column="30" />
+            <state relative-caret-position="530">
+              <caret line="552" column="65" lean-forward="false" selection-start-line="552" selection-start-column="59" selection-end-line="552" selection-end-column="65" />
               <folding>
                 <element signature="e#264#283#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Note.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Note.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="80" column="4" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="87" selection-end-column="28" />
+              <folding>
+                <element signature="e#256#265#0" expanded="true" />
+                <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
               </folding>
             </state>
           </provider>
@@ -104,8 +117,8 @@
       <file leaf-file-name="MusicAnalyzer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MusicAnalyzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="20" />
+            <state relative-caret-position="481">
+              <caret line="200" column="42" lean-forward="false" selection-start-line="200" selection-start-column="42" selection-end-line="200" selection-end-column="42" />
               <folding>
                 <element signature="e#265#276#0" expanded="true" />
               </folding>
@@ -124,36 +137,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>click</find>
-      <find>hitNote</find>
-      <find>coll</find>
-      <find>player.notesList</find>
-      <find>gameOver</find>
-      <find>timer</find>
-      <find>gameSt</find>
-      <find>timerF</find>
-      <find>retry</find>
-      <find>Button</find>
-      <find>onclic</find>
-      <find>InputMode</find>
-      <find>key</find>
-      <find>moveC</find>
-      <find>timerFi</find>
-      <find>print</find>
-      <find>CPU</find>
-      <find>cpu</find>
-      <find>hero</find>
-      <find>hitNot</find>
       <find>total</find>
       <find>targetList</find>
       <find>cpuColl</find>
       <find>mod</find>
-      <find>timerFire</find>
       <find>load</find>
       <find>conve</find>
       <find>image</find>
       <find>Music</find>
       <find>accura</find>
+      <find>targetNotes</find>
+      <find>pianoC</find>
+      <find>pianoTar</find>
+      <find>getNextTa</find>
+      <find>piano</find>
+      <find>inpu</find>
+      <find>inputNot</find>
+      <find>inputNo</find>
+      <find>MusicNote</find>
+      <find>port</find>
+      <find>getNext</find>
+      <find>getNextTar</find>
+      <find>timerFire</find>
+      <find>getNextTarge</find>
+      <find>inputNote</find>
+      <find>cpuC</find>
+      <find>pianoCO</find>
+      <find>pointCollis</find>
+      <find>portal</find>
+      <find>portalCol</find>
+      <find>pianoCol</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -176,19 +189,18 @@
         <option value="$PROJECT_DIR$/MIDIInput.py" />
         <option value="$PROJECT_DIR$/GameSOunds.py" />
         <option value="$PROJECT_DIR$/GameSounds.py" />
-        <option value="$PROJECT_DIR$/Note.py" />
-        <option value="$PROJECT_DIR$/Settings.py" />
         <option value="$PROJECT_DIR$/Player.py" />
         <option value="$PROJECT_DIR$/Song.py" />
         <option value="$PROJECT_DIR$/MusicAnalyzer.py" />
+        <option value="$PROJECT_DIR$/Note.py" />
         <option value="$PROJECT_DIR$/GameObjects.py" />
+        <option value="$PROJECT_DIR$/Settings.py" />
         <option value="$PROJECT_DIR$/Main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="72" />
-    <option name="y" value="17" />
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -506,7 +518,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512514772611</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Optimized For Speed">
+      <created>1512535412426</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1512535412426</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -519,7 +538,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296355" sideWeight="0.4941435" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18858954" sideWeight="0.65373355" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3771791" sideWeight="0.65373355" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -572,7 +591,8 @@
     <MESSAGE value="Added improved UI and Button collisions. Created functions for options menu." />
     <MESSAGE value="Added piano input with accuracy detection. More UI optimization." />
     <MESSAGE value="Fixed Tempo; laying foundation for recording" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Tempo; laying foundation for recording" />
+    <MESSAGE value="Optimized For Speed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimized For Speed" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -608,7 +628,7 @@
           <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
           <folding>
             <element signature="e#254#263#0" expanded="true" />
-            <marker date="1512533424575" expanded="true" signature="24752:24777" ph="..." />
+            <marker date="1512545434890" expanded="true" signature="24690:24715" ph="..." />
           </folding>
         </state>
       </provider>
@@ -654,7 +674,7 @@
           <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
           <folding>
             <element signature="e#256#265#0" expanded="true" />
-            <marker date="1512514768328" expanded="true" signature="3423:3466" ph="..." />
+            <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
           </folding>
         </state>
       </provider>
@@ -675,7 +695,7 @@
           <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
           <folding>
             <element signature="e#254#263#0" expanded="true" />
-            <marker date="1512533424575" expanded="true" signature="24752:24777" ph="..." />
+            <marker date="1512545434890" expanded="true" signature="24690:24715" ph="..." />
           </folding>
         </state>
       </provider>
@@ -711,7 +731,7 @@
           <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
           <folding>
             <element signature="e#256#265#0" expanded="true" />
-            <marker date="1512514768328" expanded="true" signature="3423:3466" ph="..." />
+            <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
           </folding>
         </state>
       </provider>
@@ -800,6 +820,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="274">
           <caret line="267" column="0" lean-forward="false" selection-start-line="267" selection-start-column="0" selection-end-line="267" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -807,43 +828,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Note.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="160" column="0" lean-forward="false" selection-start-line="160" selection-start-column="2" selection-end-line="162" selection-end-column="22" />
-          <folding>
-            <element signature="e#256#265#0" expanded="true" />
-            <marker date="1512514768328" expanded="true" signature="3423:3466" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MIDIInput.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="45" column="62" lean-forward="false" selection-start-line="45" selection-start-column="62" selection-end-line="45" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameSounds.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#263#285#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="37" column="35" lean-forward="false" selection-start-line="37" selection-start-column="35" selection-end-line="37" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -881,10 +865,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MIDIInput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="45" column="62" lean-forward="false" selection-start-line="45" selection-start-column="62" selection-end-line="45" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Song.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        <state relative-caret-position="115">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="e#265#298#0" expanded="true" />
           </folding>
@@ -893,31 +885,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MusicAnalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="20" />
+        <state relative-caret-position="481">
+          <caret line="200" column="42" lean-forward="false" selection-start-line="200" selection-start-column="42" selection-end-line="200" selection-end-column="42" />
           <folding>
             <element signature="e#265#276#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
+    <entry file="file://$PROJECT_DIR$/Note.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11373">
-          <caret line="669" column="51" lean-forward="false" selection-start-line="669" selection-start-column="51" selection-end-line="669" selection-end-column="51" />
+        <state relative-caret-position="147">
+          <caret line="80" column="4" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="87" selection-end-column="28" />
           <folding>
-            <element signature="e#254#263#0" expanded="true" />
-            <marker date="1512533424575" expanded="true" signature="24752:24777" ph="..." />
+            <element signature="e#256#265#0" expanded="true" />
+            <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GameObjects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5855">
-          <caret line="166" column="30" lean-forward="true" selection-start-line="166" selection-start-column="30" selection-end-line="166" selection-end-column="30" />
+        <state relative-caret-position="530">
+          <caret line="552" column="65" lean-forward="false" selection-start-line="552" selection-start-column="59" selection-end-line="552" selection-end-column="65" />
           <folding>
             <element signature="e#264#283#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="21" column="24" lean-forward="true" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="528" column="33" lean-forward="false" selection-start-line="528" selection-start-column="33" selection-end-line="528" selection-end-column="33" />
+          <folding>
+            <element signature="e#254#263#0" expanded="true" />
+            <marker date="1512545434890" expanded="true" signature="24690:24715" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameSounds.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <element signature="e#263#285#0" expanded="true" />
           </folding>
         </state>
       </provider>

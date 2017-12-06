@@ -29,18 +29,18 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 class Game(object):
     def init(self):
         self.mode = 'start'
-        self.pianoOn = False
+        self.pianoOn = True
         self.gameOver = False
         self.hasDual = False
         self.filename = 'music/fur_elise.mid'
         self.timer = 0
         self.noteQ = deque(maxlen=5)
-        self.NoteFont = pygame.font.SysFont('alba', 100)
+        self.NoteFont = pygame.font.SysFont('alba', 80)
         self.GameFont = pygame.font.SysFont('alba', 35)
         self.GameOverFont = pygame.font.SysFont('alba', 38)
         self.FileFont = pygame.font.SysFont('agency fb', 45)
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
-        self.gameMode = 'bass'
+        self.gameMode = 'treble'
         self.inputText = ''
         self.hasCPU = True
         self.isPaused = False
@@ -155,6 +155,7 @@ class Game(object):
             self.getNextCPU()
             self.moveCPU()
         self.total = len(self.player.notesList)
+        self.pianoTargets = None
         self.getNextTarget()
 
         self.numerator, self.denominator = self.player.song.getTimeSignature()
@@ -162,7 +163,6 @@ class Game(object):
     def splitNote(self, notes):
         names = []
         if len(notes) <= 1:
-            self.pianoTarget = notes[0].Note
             self.currNote = notes[0].Note.getNoteName()
             self.currOctave = notes[0].Note.getOctave()
         else:
@@ -224,12 +224,14 @@ class Game(object):
             self.noteQ.append(note)
 
     def inputNote(self):
+        targets = [elem.Note for elem in self.pianoTargets]
         try:
             result = self.noteQ.popleft()
             print(result)
-            if result == self.pianoTarget:
-                self.pianoTarget.playNote()
-                return True
+            for note in targets:
+                if result == note:
+                    note.playNote()
+            return True
         except:
             return False
 
@@ -251,11 +253,12 @@ class Game(object):
                 if self.timer % 10 == 0:
                     spawn = self.getHero().spawnNote()
                     self.heroSpawn.add(spawn)
-                self.heroSpawn.update()
-                self.getNextTarget()
-                self.getNextCPU()
+                if not self.pianoOn:
+                    self.heroSpawn.update()
                 if self.hasCPU:
+                    self.getNextCPU()
                     self.CPU.update()
+                self.getNextTarget()
                 self.clefCollision()
                 self.noteCollision()
                 self.checkGameStatus()
@@ -517,23 +520,24 @@ class Game(object):
             except:
                 pass
         else:
-            try:
-                self.pianoCollision()
-            except:
-                print('L')
+            self.pianoCollision()
+            self.cpuCollision()
+
 
 
     def pianoCollision(self):
         portal = self.getPortal()
-        collided = pygame.sprite.spritecollide(portal, self.targetNotes, False)
-        for musicNote in collided:
-            if self.inputNote():
-                musicNote.kill()
-                self.player.hitNote(musicNote)
-                portal.hit(1)
-            else:
-                portal.hit(2)
-        self.player.accuracy = ((self.player.score / self.total * 100))
+        if not self.pianoTargets == None:
+            for musicNote in self.pianoTargets:
+                if self.inputNote() and pygame.sprite.collide_rect(portal, musicNote):
+                    print(musicNote, 'j')
+                    musicNote.kill()
+                    self.player.hitNote(musicNote)
+                    self.player.notesList.remove(musicNote.Note)
+                    portal.hit(1)
+                else:
+                    portal.hit(2)
+            self.player.accuracy = ((self.player.score / self.total * 100))
 
     def heroCollision(self):
         for musicNote in self.targetNotes:
@@ -553,15 +557,6 @@ class Game(object):
             self.cpuCollision()
 
     def cpuCollision(self):
-        # if not self.hasDual:
-        #     for note in self.CPUTargets:
-        #         if pygame.sprite.spritecollide(note, self.CPU, False):
-        #             note.Note.playNote()
-        #             self.cpuHit(note)
-        #             self.player.notesList.remove(note.Note)
-        #             note.kill()
-        #     self.moveCPU()
-        # else:
         for note in self.CPUTargets:
             if pygame.sprite.spritecollide(note, self.CPU, False):
                 if len(self.targetList) == 1:
@@ -608,7 +603,10 @@ class Game(object):
 
 
     def getNextTarget(self):
-        x1 = self.getHero().x
+        if self.pianoOn:
+            x1 = self.getPortal().x
+        else:
+            x1 = self.getHero().x
         smallestDisplacement = -2 * WIDTH
         targetList = []
         targets = self.targetNotes
@@ -622,6 +620,8 @@ class Game(object):
         if not targetList == []:
             self.splitNote(targetList)
         self.targetList = targetList
+        self.pianoTargets = targetList
+
 
     def getNextCPU(self):
         x1 = self.getCPU().x
@@ -667,7 +667,7 @@ class Game(object):
     def run(self):
 
         clock = pygame.time.Clock()
-        flags = DOUBLEBUF | FULLSCREEN | HWSURFACE
+        flags = DOUBLEBUF | HWSURFACE
         screen = pygame.display.set_mode((self.width, self.height), flags)
         # screen.set_alpha(None)
         # set the title of the window

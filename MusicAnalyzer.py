@@ -48,7 +48,10 @@ def findTimeSignature(file):
             currTime = msg
             num, den = currTime.numerator, currTime.denominator
             time.append(([num, den], i))
-    return time
+    if not time == []:
+        return time
+    else:
+        return ([[[4, 4], 0]])
 
 
 # def selectTrack(tracks):

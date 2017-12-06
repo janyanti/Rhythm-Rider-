@@ -19,6 +19,7 @@ GREEN = (0, 255, 0)
 # Game Constants
 STEP = 30
 NOTESTEP = STEP//2
+PORTAL = range(360, 440)
 
 # key inputs
 

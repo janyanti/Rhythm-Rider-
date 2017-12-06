@@ -535,6 +535,7 @@ class NotePortal(pg.sprite.Sprite):
         w, h = self.image.get_size()
         self.width, self.height = w, h
         self.defineRect()
+        self.radius = 80
         self.images = self.getImageStates()
 
     def defineRect(self):
