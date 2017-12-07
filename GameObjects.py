@@ -361,7 +361,7 @@ class NextNote(pg.sprite.Sprite):
 class Button(pg.sprite.Sprite):
     actions = {'play': 'play', 'help': 'help', 'options': 'options',
                'next': 'next', 'back': 'back', 'retry': 'play',
-               'newsong': 'select', 'mainmenu': 'start'}
+               'newsong': 'select', 'mainmenu': 'start', 'backarrow': 'start'}
 
     def __init__(self, x, y, image):
         super(Button, self).__init__()

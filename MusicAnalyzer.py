@@ -175,6 +175,7 @@ def extractNoteType(PPQ, BPM, dt):
     leastDist = sys.maxsize
     for key in noteType:
         dist = abs(key - comp)
+        print(key, ':', dist)
         if dist < leastDist:
             currType = noteType[key]
             leastDist = dist

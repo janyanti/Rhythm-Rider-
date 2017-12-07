@@ -42,6 +42,7 @@ class Game(object):
         self.timeFont = pygame.font.Font('assets/Aruvarb.ttf', 116)
         self.gameMode = 'treble'
         self.inputText = ''
+        self.backarrow = pygame.sprite.Group(GameObjects.Button(60, 34, 'backarrow'))
         self.hasCPU = True
         self.isPaused = False
 
@@ -127,7 +128,6 @@ class Game(object):
         newSongButton = GameObjects.Button(484, 425, 'newsong')
         self.gameOverButtons = pygame.sprite.Group([retryButton, MMButton, newSongButton])
 
-
     def initGame(self):
         self.initGameOver()
         self.player = Player(MusicAnalyzer.generateSong(self.filename))
@@ -172,13 +172,11 @@ class Game(object):
             self.currNote = ' '.join(names)
             self.currOctave = ''
 
-
     def keyPressed(self, keyCode, modifier):
         if keyCode == pygame.K_p:
             self.isPaused = not self.isPaused
         if self.mode == 'play' and not self.pianoOn:
             hero = self.getHero()
-            cpu = self.getCPU()
             if keyCode == pygame.K_UP:
                 hero.changeDirection(-1)
                 hero.move(WIDTH, HEIGHT)
@@ -186,9 +184,11 @@ class Game(object):
                 hero.changeDirection(1)
                 hero.move(WIDTH, HEIGHT)
             if keyCode == pygame.K_w and self.hasDual:
+                cpu = self.getCPU()
                 cpu.changeDirection(-1)
                 cpu.move(WIDTH, HEIGHT)
             if keyCode == pygame.K_s and self.hasDual:
+                cpu = self.getCPU()
                 cpu.changeDirection(1)
                 cpu.move(WIDTH, HEIGHT)
         if self.mode == 'select':
@@ -296,11 +296,13 @@ class Game(object):
         self.songFiles.draw(screen)
         file = self.FileFont.render(self.inputText, True, BLACK, None)
         screen.blit(file, (STEP * 3, 285))
+        self.backarrow.draw(screen)
 
     def drawOptions(self, screen):
         self.optionsScreen.draw(screen)
         self.InputModes.draw(screen)
         self.NotesModes.draw(screen)
+        self.backarrow.draw(screen)
 
     def drawGame(self, screen):
         for line in self.Lines:
@@ -323,7 +325,7 @@ class Game(object):
         self.drawTimeSignature(screen)
         self.drawTempo(screen)
 
-        if self.gameOver:
+        if self.gameOver or self.isPaused:
             self.drawGameOver(screen)
 
     def drawGameOver(self, screen):
@@ -331,8 +333,7 @@ class Game(object):
         self.gameOverMenu.draw(screen)
         self.gameOverButtons.draw(screen)
         stats = self.GameOverFont.render(msg, True, BLACK)
-        screen.blit(stats, (425, 250))
-
+        screen.blit(stats, (445, 250))
 
     def generateSongFiles(self):
         x = 200
@@ -402,7 +403,7 @@ class Game(object):
         elif self.mode == 'start':
             self.clickStart(x, y)
             buttonPress()
-        elif self.mode == 'play' and self.gameOver:
+        elif self.mode == 'play' and self.gameOver or self.isPaused:
             self.clickPlay(x, y)
             buttonPress()
 
@@ -417,12 +418,20 @@ class Game(object):
             if self.pointCollision(clef, x, y):
                 clef.click()
                 exec(NOTESMODE[key])
+        for arrow in self.backarrow:
+            if self.pointCollision(arrow, x, y):
+                key = arrow.click(arrow.name)
+                self.selectMode(key)
 
     def clickSelect(self, x, y):
         for songFile in self.songFiles:
             if self.pointCollision(songFile, x, y):
                 songFile.click()
                 self.filename = songFile.id
+        for arrow in self.backarrow:
+            if self.pointCollision(arrow, x, y):
+                key = arrow.click(arrow.name)
+                self.selectMode(key)
 
     def clickStart(self, x, y):
         for button in self.startButtons:
@@ -439,6 +448,10 @@ class Game(object):
         if self.pointCollision(back, x, y):
             self.helpIndex -= 1
             self.updateHelpScreen()
+        for arrow in self.backarrow:
+            if self.pointCollision(arrow, x, y):
+                key = arrow.click(arrow.name)
+                self.selectMode(key)
 
     def clickPlay(self, x, y):
         for button in self.gameOverButtons:
@@ -450,7 +463,6 @@ class Game(object):
         newImage = self.pageList[self.helpIndex]
         data = self.helpscreen.sprites()[0]
         data.image = GameObjects.load_images(newImage)
-        print('done')
 
     def pointCollision(self, obj, x, y):
         x1, y1, w, h = obj.x, obj.y, obj.width, obj.height
@@ -475,9 +487,9 @@ class Game(object):
 
     def drawNextText(self, screen):
         note = self.NoteFont.render(str(self.currNote), True, BLACK)
-        screen.blit(note, (WIDTH // 3, HEIGHT // 2 - STEP * 3))
+        screen.blit(note, (WIDTH // 3 + STEP * 2, HEIGHT // 2 - STEP * 3))
         octave = self.GameFont.render(str(self.currOctave), True, BLACK)
-        screen.blit(octave, (WIDTH // 3 + STEP * 4, HEIGHT // 2 + STEP))
+        screen.blit(octave, (WIDTH // 3 + STEP * 6, HEIGHT // 2 + STEP))
         acc = "Accuracy: %.2f" % (min(100, self.player.accuracy)) + '%'
         accuracy = self.GameFont.render(acc, True, BLACK)
         screen.blit(accuracy, (WIDTH - 10 * STEP, NOTESTEP * 2))
@@ -523,14 +535,11 @@ class Game(object):
             self.pianoCollision()
             self.cpuCollision()
 
-
-
     def pianoCollision(self):
         portal = self.getPortal()
         if not self.pianoTargets == None:
             for musicNote in self.pianoTargets:
                 if self.inputNote() and pygame.sprite.collide_rect(portal, musicNote):
-                    print(musicNote, 'j')
                     musicNote.kill()
                     self.player.hitNote(musicNote)
                     self.player.notesList.remove(musicNote.Note)
@@ -549,7 +558,7 @@ class Game(object):
                     self.player.hitNote(musicNote)
                     self.player.notesList.remove(note)
                 else:
-                    self.hitChord(musicNote)
+                    self.hitChord(musicNote, self.targetList)
                 self.getNextTarget()
                 self.player.accuracy = ((self.player.score / self.total * 100))
 
@@ -565,15 +574,14 @@ class Game(object):
                     self.player.notesList.remove(note.Note)
                     note.kill()
                 else:
-                    self.hitChord(note)
+                    self.hitChord(note, self.CPUList)
         self.moveCPU()
-
 
     def moveCPU(self):
         try:
-            if not self.CPUTargets == [] and not self.hasDual:
+            if not self.hasDual:
                 target = self.CPUList[0]
-                self.cpuList = []
+                self.CPUList = []
                 height = target.Note.getHeight()
                 self.getCPU().cpuMove(height)
         except:
@@ -585,16 +593,9 @@ class Game(object):
                 self.CPUTargets.sprites().pop(i)
                 self.player.score += 1
 
-    def hitChord(self, testNote):
-        if testNote in self.targetList:
-            for musicNote in self.targetList:
-                note = musicNote.Note
-                note.playNote()
-                musicNote.kill()
-                self.player.hitNote(musicNote)
-                self.player.notesList.remove(note)
-        elif testNote in self.CPUList:
-            for musicNote in self.CPUList:
+    def hitChord(self, testNote, data):
+        if testNote in data:
+            for musicNote in data:
                 note = musicNote.Note
                 note.playNote()
                 musicNote.kill()
@@ -621,7 +622,6 @@ class Game(object):
             self.splitNote(targetList)
         self.targetList = targetList
         self.pianoTargets = targetList
-
 
     def getNextCPU(self):
         x1 = self.getCPU().x

@@ -24,13 +24,13 @@ PORTAL = range(360, 440)
 # key inputs
 
 # game modes
-MODES = {'play': 'self.initGame()\nself.gameOver = False', 'select': 'self.initSelect',
-         'help': 'self.initHelp()', 'start': 'self.initStart',
+MODES = {'play': 'self.initGame()\nself.gameOver = False', 'select': 'self.initSelect()',
+         'help': 'self.initHelp()', 'start': 'self.initStart()',
          'options': 'self.initOptions()'}
 
 CPU = '''self.hasCPU = True \nself.pianoOn = False\nself.hasDual = False'''
 SINGLE = '''self.hasCPU = False \nself.pianoOn = False\nself.hasDual = False'''
-PIANO = '''self.hasCPU = False \nself.pianoOn = True\nself.hasDual = False'''
+PIANO = '''self.hasCPU = True \nself.pianoOn = True\nself.hasDual = False'''
 DUAL = '''self.hasCPU = True \nself.pianoOn = False\nself.hasDual = True'''
 
 TREBLE = 'self.gameMode = "treble"'
