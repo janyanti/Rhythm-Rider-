@@ -1,11 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f7c4a23-bf2b-4d7d-9ed0-8e2688628d0a" name="Default" comment="">
+    <list default="true" id="7f7c4a23-bf2b-4d7d-9ed0-8e2688628d0a" name="Default" comment="Fixed minor bugs; edited UI functionality">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/Aruvarb.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/back.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/backarrow.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/backbutton.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/bassnotes.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/bassplay.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/bassplay_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/canon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/canon_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/cpumode.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/cpumode_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/dualmode.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/dualmode_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/fur_elise" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/gameover.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/halfnotehead.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/help.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/helpscreen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/helpscreen1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/hero_down.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/hero_down1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/hero_up.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/hero_up1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/mainmenu.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/minuet.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/minuet_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/newsong.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/next.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/nextbutton.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/noteportal.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/noteportal_hit.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/noteportal_miss.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/ode_to_joy.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/ode_to_joy_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/options.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/optionsscreen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/pianomode.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/pianomode_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/retry.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/select.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/selectscreen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/singlemode.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/singlemode_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/spawn1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/spawn2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/spawn3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/spawn4.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/spawn5.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/startscreen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/the_entertainer.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/the_entertainer_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/treblenotes.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/trebleplay.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/trebleplay_on.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/wholenotehead.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/beethoven_fur_elise" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/desktop.ini" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/moonlight" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/mozart_turkish_march" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/ode_to_joy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/turkish_march" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GameObjects.py" afterPath="$PROJECT_DIR$/GameObjects.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MusicAnalyzer.py" afterPath="$PROJECT_DIR$/MusicAnalyzer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Settings.py" afterPath="$PROJECT_DIR$/Settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,7 +79,7 @@
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
-              <caret line="203" column="17" lean-forward="false" selection-start-line="203" selection-start-column="15" selection-end-line="203" selection-end-column="17" />
+              <caret line="223" column="22" lean-forward="false" selection-start-line="223" selection-start-column="17" selection-end-line="223" selection-end-column="22" />
               <folding>
                 <element signature="e#254#263#0" expanded="true" />
                 <marker date="1512617289241" expanded="true" signature="25071:25096" ph="..." />
@@ -45,7 +103,7 @@
       <file leaf-file-name="MIDIInput.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MIDIInput.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
+            <state relative-caret-position="425">
               <caret line="45" column="62" lean-forward="false" selection-start-line="45" selection-start-column="62" selection-end-line="45" selection-end-column="62" />
               <folding />
             </state>
@@ -55,7 +113,7 @@
       <file leaf-file-name="Song.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Song.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-675">
+            <state relative-caret-position="884">
               <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="e#265#298#0" expanded="true" />
@@ -79,8 +137,8 @@
       <file leaf-file-name="Settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
+            <state relative-caret-position="68">
+              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -89,7 +147,7 @@
       <file leaf-file-name="GameObjects.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameObjects.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1312">
+            <state relative-caret-position="6222">
               <caret line="369" column="0" lean-forward="false" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
               <folding>
                 <element signature="e#264#283#0" expanded="true" />
@@ -114,8 +172,8 @@
       <file leaf-file-name="MusicAnalyzer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MusicAnalyzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="719">
-              <caret line="177" column="22" lean-forward="false" selection-start-line="177" selection-start-column="22" selection-end-line="177" selection-end-column="22" />
+            <state relative-caret-position="2963">
+              <caret line="177" column="23" lean-forward="false" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
               <folding>
                 <element signature="e#265#276#0" expanded="true" />
               </folding>
@@ -134,8 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getNextTa</find>
-      <find>piano</find>
       <find>inpu</find>
       <find>inputNot</find>
       <find>inputNo</find>
@@ -160,10 +216,12 @@
       <find>total</find>
       <find>player.hit</find>
       <find>player.score</find>
-      <find>Button</find>
       <find>cpuHit</find>
       <find>tkinter</find>
       <find>tk</find>
+      <find>Button</find>
+      <find>dequ</find>
+      <find>noteQ</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -190,9 +248,9 @@
         <option value="$PROJECT_DIR$/Note.py" />
         <option value="$PROJECT_DIR$/GameSounds.py" />
         <option value="$PROJECT_DIR$/GameObjects.py" />
-        <option value="$PROJECT_DIR$/Settings.py" />
         <option value="$PROJECT_DIR$/MusicAnalyzer.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/Settings.py" />
       </list>
     </option>
   </component>
@@ -532,12 +590,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512548170689</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Fixed minor bugs; edited UI functionality">
+      <created>1512633517173</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1512633517173</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -600,7 +664,8 @@
     <MESSAGE value="Fixed Tempo; laying foundation for recording" />
     <MESSAGE value="Optimized For Speed" />
     <MESSAGE value="Optimized For Speed; added game sounds; fixed piano input." />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimized For Speed; added game sounds; fixed piano input." />
+    <MESSAGE value="Fixed minor bugs; edited UI functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed minor bugs; edited UI functionality" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -853,22 +918,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MIDIInput.py">
+    <entry file="file://$USER_HOME$/Desktop/tp3/example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="45" column="62" lean-forward="false" selection-start-line="45" selection-start-column="62" selection-end-line="45" selection-end-column="62" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Note.py">
+    <entry file="file://$PROJECT_DIR$/Settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="80" column="4" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="87" selection-end-column="28" />
-          <folding>
-            <element signature="e#256#265#0" expanded="true" />
-            <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
-          </folding>
+        <state relative-caret-position="68">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -884,11 +948,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Song.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-675">
+        <state relative-caret-position="884">
           <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="e#265#298#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MIDIInput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="45" column="62" lean-forward="false" selection-start-line="45" selection-start-column="62" selection-end-line="45" selection-end-column="62" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -902,17 +974,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Settings.py">
+    <entry file="file://$PROJECT_DIR$/MusicAnalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
-          <folding />
+        <state relative-caret-position="2963">
+          <caret line="177" column="23" lean-forward="false" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="23" />
+          <folding>
+            <element signature="e#265#276#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GameObjects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1312">
+        <state relative-caret-position="6222">
           <caret line="369" column="0" lean-forward="false" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
           <folding>
             <element signature="e#264#283#0" expanded="true" />
@@ -920,22 +994,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/tp3/example.py">
+    <entry file="file://$PROJECT_DIR$/Note.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="1360">
+          <caret line="80" column="4" lean-forward="true" selection-start-line="80" selection-start-column="4" selection-end-line="87" selection-end-column="28" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MusicAnalyzer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="719">
-          <caret line="177" column="22" lean-forward="false" selection-start-line="177" selection-start-column="22" selection-end-line="177" selection-end-column="22" />
-          <folding>
-            <element signature="e#265#276#0" expanded="true" />
+            <element signature="e#256#265#0" expanded="true" />
+            <marker date="1512542310323" expanded="true" signature="3489:3532" ph="..." />
           </folding>
         </state>
       </provider>
@@ -943,7 +1008,7 @@
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="203" column="17" lean-forward="false" selection-start-line="203" selection-start-column="15" selection-end-line="203" selection-end-column="17" />
+          <caret line="223" column="22" lean-forward="false" selection-start-line="223" selection-start-column="17" selection-end-line="223" selection-end-column="22" />
           <folding>
             <element signature="e#254#263#0" expanded="true" />
             <marker date="1512617289241" expanded="true" signature="25071:25096" ph="..." />

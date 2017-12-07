@@ -3,7 +3,6 @@
 #  Joel Anyanti | Janyanti
 ##############################################
 
-import pygame as pg
 
 # Game/Display
 WIDTH = 1280
