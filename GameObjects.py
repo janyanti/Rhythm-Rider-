@@ -166,10 +166,15 @@ class MusicNote(GameObject):
     noteheads = ['notehead', 'halfnotehead', 'wholenotehead']
     stem = load_images('stem')
     sharp = load_images('sharp')
+    cross = load_images('cross')
+    notesDict = dict()
 
-    def __init__(self, x, note, dx, y=0, img=0, rad=20, ):
+    def __init__(self, stem, x, note, dx, y=0, img=0, rad=20, ):
+        self.x, self.y = x, y
         self.Note = note
-        self.type = note.getType()
+        self.stem = stem
+        self.type = self.noteType()
+        # self.type = note.getType()
         self.getNoteHeadIndex()
         image = load_images(MusicNote.noteheads[self.noteHeadIndex])
         super(MusicNote, self).__init__ \
@@ -178,6 +183,7 @@ class MusicNote(GameObject):
         self.dx = dx
         self.velocity = (-self.dx, 0)
         self.y = self.Note.getHeight()
+
 
     def draw(self, screen):
         self.rect = self.getRect()
@@ -188,6 +194,8 @@ class MusicNote(GameObject):
         sharpRect = self.getSharpRect()
         if self.Note.isAccidental():
             screen.blit(MusicNote.sharp, sharpRect)
+        if self.Note.cross:
+            screen.blit(MusicNote.cross, self.getCrossRect())
 
     def getNoteHeadIndex(self):
         typ = self.type
@@ -207,6 +215,12 @@ class MusicNote(GameObject):
         rect = pg.Rect(self.x - w // 2, self.y - h // 2, w, h)
         return rect
 
+    def getCrossRect(self):
+        x, y = self.x, self.y
+        w, h = 75, 3
+        rect = pg.Rect(x - w // 2, y - h // 2, w, h)
+        return rect
+
     def getSharpRect(self):
         # gets position of accidental
         x, y = self.x - 40, self.y + 5
@@ -217,18 +231,29 @@ class MusicNote(GameObject):
     def noteType(self):
         # returns the orientation of a given note
         x, y = self.x, self.y
-        upNote = pg.Rect(x + 15, y - 105, x + 17, y)
-        downNote = pg.Rect(x - 19, y, x - 21, y + 105)
-        clef = self.Note.getClef()
-        noteID = self.Note.noteID
-        if clef is "Treble":
-            if noteID >= 71:
-                return downNote
-            return upNote
-        if clef is 'Bass':
-            if noteID >= 50:
-                return downNote
-            return upNote
+        if self.stem == 'up':
+            return pg.Rect(x + 15, y - 105, x + 17, y)
+        else:
+            return pg.Rect(x - 19, y, x - 21, y + 105)
+        # clef = self.Note.getClef()
+        # noteID = self.Note.noteID
+        # if clef is "Treble":
+        #     if noteID >= 71:
+        #         return downNote
+        #     return upNote
+        # if clef is 'Bass':
+        #     if noteID >= 50:
+        #         return downNote
+        #     return upNote
+
+    def checkStem(self):
+        if not self.group in MusicNote.notesDict:
+            result = self.noteType()
+            MusicNote.notesDict[self.group] = result
+            self.type = result
+        else:
+            self.type = MusicNote.notesDict[self.group]
+
 
     def update(self, screenWidth=WIDTH, screenHeight=WIDTH):
         self.image = pg.transform.rotate(self.baseImage, self.angle)

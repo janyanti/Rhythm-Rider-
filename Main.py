@@ -29,7 +29,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 class Game(object):
     def init(self):
         self.mode = 'start'
-        self.pianoOn = True
+        self.pianoOn = False
         self.gameOver = False
         self.hasDual = False
         self.filename = 'music/fur_elise.mid'

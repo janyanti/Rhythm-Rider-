@@ -30,6 +30,7 @@ class Song():
         self.groups = self.groupNotes()
         self.notePositions = self.positionNotes()
         print(self.notePositions)
+        self.checkStem()
         self.musicNotes = self.generateNotes()
         self.trebleNotes, self.bassNotes = self.getClefs()
 
@@ -40,7 +41,8 @@ class Song():
         currWidth = self.startWidth
         for (i, key) in enumerate(self.groups):
             for note in self.groups[key]:
-                musicNote = MusicNote(currWidth, note, dx)
+                stem = self.stems[key]
+                musicNote = MusicNote(stem, currWidth, note, dx)
                 result.append(musicNote)
             if not self.notePositions[i] < 0.1:
                 currWidth += (STEP * 6) * self.notePositions[i]
@@ -78,6 +80,7 @@ class Song():
     def groupNotes(self):
         temp = self.notesList
         result = {}
+        stem = {}
         for elem in temp:
             pos = elem.getPosition()
             if not pos in result:
@@ -105,6 +108,25 @@ class Song():
         tempo = self.getTempo()
         dx = INTERCEPT + SLOPE * tempo
         return dx
+
+    def checkStem(self):
+        stems = {}
+        for key in self.groups:
+            note = self.groups[key][0]
+            clef = note.getClef()
+            noteID = note.noteID
+            if clef is "Treble":
+                if noteID >= 71:
+                    stems[key] = 'down'
+                else:
+                    stems[key] = 'up'
+            if clef is 'Bass':
+                if noteID >= 50:
+                    stems[key] = 'down'
+                else:
+                    stems[key] = 'up'
+        print(stems)
+        self.stems = stems
 
     def mostCommon(self, lst):
         data = Counter(lst)

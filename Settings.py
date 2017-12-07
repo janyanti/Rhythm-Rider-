@@ -51,3 +51,4 @@ SFY = 590  # Song File Y-pos
 SFDX = 280  # change in x
 IMX = 970  # Input mode X-pos
 IMDY = 156  # cgange in y
+CROSSES = {60, 81, 40}

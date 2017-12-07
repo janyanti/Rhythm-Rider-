@@ -74,6 +74,7 @@ class Notes():
         self.type = typ
         self.note = Notes.noteConvert[ID]
         self.clef = self.getClef()
+        self.hasCross()
 
     def __repr__(self):
         return str(self.note)
@@ -160,6 +161,13 @@ class Notes():
         # dt = list.pop()
         result = Notes(noteID, velocity, channel, dt)
         return result
+
+    def hasCross(self):
+        ID = self.noteID
+        if ID in CROSSES:
+            self.cross = True
+        else:
+            self.cross = False
 
 # l = [144, 60, 112, 0]
 # c = Notes.toNote(l)
