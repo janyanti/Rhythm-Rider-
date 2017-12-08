@@ -32,7 +32,7 @@ The Game is designed to work with a MIDI Keyboard or Virtual Input; However, the
 
 The game is designed to use MIDI Files as input to generate corresponding game levels, this means that experiences will vary depending on file selections. For optimal use, it is recommended to use MIDI files with one track. This will allow for a focus on musical content that a user can reasonably read and learn from the game with.
 
-Resources such as [8notes](www.8notes.com) and [MuseScore](www.musescore.com) provide free access to MIDI files that can be used to play with the game.
+Resources such as [8notes](https://www.8notes.com/) and [MuseScore](https://musescore.com/dashboard) provide free access to MIDI files that can be used to play with the game.
 
 For optimal performance in piano mode, it is advisable to use a MIDI input on a wired connection to reduce latency between key input and the game.
 
