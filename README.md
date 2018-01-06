@@ -1,7 +1,7 @@
 ![picture alt](https://github.com/janyanti/TP_Anyanti/blob/master/assets/gamelogo.png?raw=true)
 
 # 15-112 Term Project: Rhythm Rider
-Rhythm Rider is an interactive music based game designed to produce an enjoyable experience while allowing a user to become more comfortable with musical notation and sight-reading. The project is desinged to take MIDI Files as input and reproduce the music stored in the files with accurate musical representation. It is implemented with Python and makes use of the Pygame and Mido Python Libraries.
+Rhythm Rider is an interactive music based game designed to produce an enjoyable experience while allowing a user to become more comfortable with musical notation and sight-reading. The project is designed to take MIDI Files as input and reproduce the music stored in the files with accurate musical representation. It is implemented with Python and makes use of the Pygame and Mido Python Libraries.
 
 # Installation
 Required Modules:
